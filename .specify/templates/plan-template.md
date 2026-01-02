@@ -31,7 +31,34 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### Spec-Driven Development Compliance
+- [ ] All functionality has corresponding specification documents before implementation
+- [ ] Specifications are versioned and preserved per constitution requirements
+- [ ] No code exists without written specification
+
+### Separation of Concerns Compliance
+- [ ] Models contain no business logic
+- [ ] Services contain no I/O or CLI code
+- [ ] CLI serves as thin interface layer only
+- [ ] Business logic isolated in service layers
+- [ ] Data models are pure data containers
+
+### Simplicity Over Prematurity Compliance
+- [ ] No premature optimization beyond current phase requirements
+- [ ] Implementation matches current phase complexity (Phase I: CLI In-Memory)
+- [ ] No databases or complex persistence in Phase I
+- [ ] Solution is simplest that meets current phase needs
+
+### Forward Compatibility Compliance
+- [ ] Architecture supports evolution to web app, AI integration, and cloud deployment
+- [ ] APIs and data structures designed with extensibility in mind
+- [ ] No implementation choices that block future phases
+- [ ] Platform-agnostic design maintained where possible
+
+### Test-First Development Compliance
+- [ ] Tests written before implementation
+- [ ] TDD cycle will be followed: Tests → Fail → Implement → Pass
+- [ ] Test coverage requirements established
 
 ## Project Structure
 

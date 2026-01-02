@@ -1,55 +1,70 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 → 1.1.0
+- Modified principles: Added new Phase I specific principles for CLI usability
+- Added sections: Human-Friendly Identifiers, CLI Usability, Backward Simplicity, Non-Breaking Evolution
+- Removed sections: None
+- Templates requiring updates: ⚠ pending - plan-template.md, spec-template.md, tasks-template.md
+- Follow-up TODOs: Update templates to align with new principles
+-->
+# Todo System Constitution
+
+## Architectural Vision
+
+The Todo system will evolve across 5 phases:
+
+1. CLI In-Memory Application (current)
+2. Full-Stack Web App with Persistence
+3. AI Chatbot using MCP & Agents
+4. Local Kubernetes Deployment
+5. Production Cloud & Event-Driven Architecture
+
+Phase I is the foundation. All decisions made in earlier phases must not block future phases.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Spec-Driven Development (Non-Negotiable)
+No code may exist without a written specification. Specifications are immutable once implemented. All specs must be versioned and preserved. Every feature, bug fix, and enhancement must begin with a specification document before implementation begins.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Separation of Concerns
+Models contain no business logic. Services contain no I/O or CLI code. CLI is a thin interface layer only. Business logic must be isolated in service layers, data models must be pure data containers, and presentation layers must only handle user interaction.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Simplicity Over Prematurity
+No databases in Phase I. No premature optimization or complex architecture that doesn't match the current phase requirements. Implement the simplest solution that meets current phase needs while keeping future phases possible. Follow YAGNI (You Aren't Gonna Need It) principles.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Forward Compatibility
+All architectural decisions must consider future phase requirements. No implementation choices that would block evolution to web app, AI integration, or cloud deployment. APIs, data structures, and interfaces must be designed with extensibility in mind.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Test-First Development (Non-Negotiable)
+All code must have corresponding tests before implementation. TDD mandatory: Tests written → User approved → Tests fail → Then implement. Red-Green-Refactor cycle strictly enforced. Test coverage must be maintained at acceptable levels.
 
-### [PRINCIPLE_6_NAME]
+### VI. Platform Agnostic Design
+Code must not be tied to specific platforms, frameworks, or deployment environments beyond what's required for the current phase. Architecture should allow for easy migration between phases without major rewrites.
 
+## Phase I Specific Principles
 
-[PRINCIPLE__DESCRIPTION]
+### VII. Human-Friendly Identifiers
+CLI-facing identifiers MUST be short and easy to type. Phase I identifiers MUST be sequential integers. IDs reset on application restart (in-memory rule preserved).
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VIII. CLI Usability Is a First-Class Concern
+CLI output MUST be readable without scrolling when possible. Visual separation improves correctness and reduces user error. ASCII tables are allowed in Phase I.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IX. Backward Simplicity
+No command may accept ambiguous identifiers (e.g., description text). All destructive actions MUST use explicit numeric IDs.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### X. Non-Breaking Evolution
+ID changes must not alter business logic semantics. Service layer must remain UI-agnostic.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Additional Constraints
+
+Technology choices must support the evolution from CLI → Web → AI → Kubernetes → Cloud. Core business logic must remain platform-agnostic. Data models should be designed to support eventual persistence and synchronization. All external dependencies must be evaluated for long-term maintainability and phase evolution support.
+
+## Development Workflow
+
+All features must begin with specification in the appropriate spec file. Code reviews must verify constitution compliance. Each commit must reference corresponding specification items. Breaking changes to public interfaces require explicit approval and migration planning. All changes must pass existing tests before merging.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices. Amendments require explicit approval and documentation of the change rationale. All PRs and code reviews must verify compliance with these principles. Complexity must be justified with clear benefits to current or future phases. The constitution must be consulted when making architectural decisions.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.1.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-01

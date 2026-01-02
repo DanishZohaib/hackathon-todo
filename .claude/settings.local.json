@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch --all --prune)",
+      "Bash(pwsh -File .specify/scripts/powershell/create-new-feature.ps1 -Json -ShortName \"todo-phase1-specs\" -Number 1 \"Specification for Phase I of the Todo project: In-Memory Task Model, CRUD Operations, Completion Status Management, CLI Interaction, Error Handling & Validation\")",
+      "Bash(echo $SPECIFY_FEATURE)",
+      "Bash(python src/cli/main.py --help)",
+      "Bash(python -m src.cli.main:*)",
+      "Bash(python test_functionality.py)",
+      "Bash(python test_full_functionality.py)",
+      "Bash(python test_list_functionality.py)",
+      "Bash(python test_complete_functionality.py)",
+      "Bash(python test_delete_functionality.py)",
+      "Bash(python test_error_handling.py)",
+      "Bash(python final_validation_test.py)",
+      "Bash(python test_cli_commands.py)",
+      "Bash(python demo.py)",
+      "Bash(dir /s)",
+      "Bash(.powershell -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
+      "Bash(pwsh -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
+      "Bash(git rev-parse --git-dir)",
+      "Bash(python debug_test.py)"
+    ]
+  }
+}

@@ -113,3 +113,25 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+
+## Constitution Compliance
+
+### Spec-Driven Development Requirements
+- [ ] This specification document exists before any implementation code
+- [ ] All requirements trace back to this specification
+- [ ] Changes to requirements will update this specification first
+
+### Separation of Concerns Requirements
+- [ ] Models will contain no business logic
+- [ ] Services will handle business logic separately from I/O operations
+- [ ] CLI interface will remain a thin presentation layer
+
+### Simplicity Over Prematurity Requirements
+- [ ] Solution will match current phase (Phase I: CLI In-Memory) complexity
+- [ ] No premature optimization beyond current requirements
+- [ ] No database dependencies in Phase I implementation
+
+### Forward Compatibility Requirements
+- [ ] Architecture will support evolution to web app, AI integration, and cloud deployment
+- [ ] Data models will be designed for eventual persistence
+- [ ] APIs will be designed with extensibility in mind

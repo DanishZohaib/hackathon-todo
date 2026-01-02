@@ -146,10 +146,20 @@ Examples of foundational tasks (adjust based on your project):
 
 ---
 
-## Phase N: Polish & Cross-Cutting Concerns
+## Phase N: Constitution Compliance & Polish
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Constitution compliance verification and improvements that affect multiple user stories
 
+### Constitution Compliance Tasks
+- [ ] TXXX Verify all code has corresponding specification documentation
+- [ ] TXXX Validate separation of concerns (models contain no business logic)
+- [ ] TXXX Confirm services contain no I/O or CLI code
+- [ ] TXXX Verify CLI serves as thin interface layer only
+- [ ] TXXX Confirm no premature optimization beyond Phase I requirements
+- [ ] TXXX Validate forward compatibility for future phases
+- [ ] TXXX Verify platform-agnostic design principles
+
+### Polish & Cross-Cutting Concerns
 - [ ] TXXX [P] Documentation updates in docs/
 - [ ] TXXX Code cleanup and refactoring
 - [ ] TXXX Performance optimization across all stories
