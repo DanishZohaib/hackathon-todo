@@ -19,7 +19,11 @@
       "Bash(.powershell -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
       "Bash(pwsh -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
       "Bash(git rev-parse --git-dir)",
-      "Bash(python debug_test.py)"
+      "Bash(python debug_test.py)",
+      "Bash(pwsh -File .specify/scripts/powershell/create-new-feature.ps1 -Json -ShortName \"interactive-cli-mode\" -Number 1 \"A usability gap has been identified in Phase I: When the application is launched without arguments, it exits immediately without allowing task interaction. You must define a new specification to address this issue. New Spec Required Spec 008: Interactive CLI Mode Fallback Rules: Do NOT modify existing specs Do NOT break command-based usage Behavior must remain deterministic Must remain Phase I only Create the new spec and store it in specs-history/.\")",
+      "Bash(mkdir -p specs-history/)",
+      "Bash(timeout 5s python -m src.cli.main)",
+      "Bash(ls -la *.md)"
     ]
   }
 }

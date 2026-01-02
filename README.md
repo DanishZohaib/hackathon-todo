@@ -21,28 +21,29 @@ No installation required. The application can be run directly with Python.
 
 ## Usage
 
-### Add a new task
+### Interactive Mode (New!)
+Launch the application in interactive mode with a menu-driven interface:
 ```bash
+python -m src.cli.main
+```
+This provides a user-friendly menu system for all todo operations without needing to remember command syntax.
+
+### Command Mode
+Use traditional command-line interface (still fully supported):
+```bash
+# Add a new task
 python -m src.cli.main add "Task description here"
-```
 
-### List all tasks
-```bash
+# List all tasks
 python -m src.cli.main list
-```
 
-### Complete a task
-```bash
+# Complete a task
 python -m src.cli.main complete <task_id>
-```
 
-### Delete a task
-```bash
+# Delete a task
 python -m src.cli.main delete <task_id>
-```
 
-### Get help
-```bash
+# Get help
 python -m src.cli.main --help
 ```
 

@@ -57,6 +57,10 @@ class TodoCLI:
         # Parse arguments
         args = parser.parse_args()
 
+        # Check if no command was provided - enter interactive mode
+        if args.command is None:
+            return self.run_interactive_mode()
+
         # Handle commands
         try:
             if args.command == "add":
@@ -76,6 +80,152 @@ class TodoCLI:
         except Exception as e:
             print(f"Error: {e}", file=sys.stderr)
             return 1
+
+    def run_interactive_mode(self) -> int:
+        """
+        Run the interactive mode loop.
+
+        Returns:
+            Exit code (0 for success, non-zero for errors)
+        """
+        print("=== Todo CLI ===")
+        print("Welcome to the interactive Todo CLI!")
+        print("You can manage your tasks using the menu below.")
+
+        while True:
+            try:
+                # Display the menu
+                self.display_interactive_menu()
+
+                # Get user choice
+                choice = input("\nEnter your choice (1-5): ").strip()
+
+                # Process the choice
+                if choice == "1":
+                    self.handle_interactive_add()
+                elif choice == "2":
+                    self.handle_interactive_list()
+                elif choice == "3":
+                    self.handle_interactive_complete()
+                elif choice == "4":
+                    self.handle_interactive_delete()
+                elif choice == "5":
+                    print("Goodbye!")
+                    return 0
+                else:
+                    print("Invalid choice. Please enter a number between 1 and 5.")
+            except KeyboardInterrupt:
+                print("\n\nOperation cancelled by user. Goodbye!")
+                return 0
+            except Exception as e:
+                print(f"Error: {e}", file=sys.stderr)
+
+    def display_interactive_menu(self):
+        """
+        Display the interactive menu with numbered options.
+        """
+        print("\n" + "="*20)
+        print("1. Add Task")
+        print("2. List Tasks")
+        print("3. Complete Task")
+        print("4. Delete Task")
+        print("5. Exit")
+        print("="*20)
+
+    def handle_interactive_add(self):
+        """
+        Handle adding a task in interactive mode.
+        """
+        try:
+            description = input("Enter task description: ").strip()
+            if not description:
+                print("Error: Task description cannot be empty. Please enter a valid description.")
+                return
+
+            task = self.service.add_task(description)
+            print(f"Task added successfully with ID: {task.id}")
+        except ValueError as e:
+            print(f"Error: {e}", file=sys.stderr)
+        except Exception as e:
+            print(f"Error: {e}", file=sys.stderr)
+
+    def handle_interactive_list(self):
+        """
+        Handle listing tasks in interactive mode.
+        """
+        try:
+            tasks = self.service.get_all_tasks()
+            if not tasks:
+                print("No tasks found")
+                return
+
+            self._render_task_table(tasks)
+        except Exception as e:
+            print(f"Error: {e}", file=sys.stderr)
+
+    def handle_interactive_complete(self):
+        """
+        Handle completing a task in interactive mode.
+        """
+        try:
+            tasks = self.service.get_all_tasks()
+            if not tasks:
+                print("No tasks available to complete")
+                return
+
+            task_id = input("Enter task ID to complete: ").strip()
+            if not task_id:
+                print("Error: Task ID cannot be empty. Please enter a valid task ID.")
+                return
+
+            try:
+                task_id = int(task_id)
+                if task_id <= 0:
+                    print("Error: Task ID must be a positive integer. Please enter a number greater than 0.")
+                    return
+            except ValueError:
+                print("Error: Task ID must be a positive integer. Please enter a valid number.")
+                return
+
+            success = self.service.complete_task(task_id)
+            if success:
+                print(f"Task {task_id} marked as complete")
+            else:
+                print(f"Error: Task with ID {task_id} not found. Please check the task ID and try again.", file=sys.stderr)
+        except Exception as e:
+            print(f"Error: {e}", file=sys.stderr)
+
+    def handle_interactive_delete(self):
+        """
+        Handle deleting a task in interactive mode.
+        """
+        try:
+            tasks = self.service.get_all_tasks()
+            if not tasks:
+                print("No tasks available to delete")
+                return
+
+            task_id = input("Enter task ID to delete: ").strip()
+            if not task_id:
+                print("Error: Task ID cannot be empty. Please enter a valid task ID.")
+                return
+
+            try:
+                task_id = int(task_id)
+                if task_id <= 0:
+                    print("Error: Task ID must be a positive integer. Please enter a number greater than 0.")
+                    return
+            except ValueError:
+                print("Error: Task ID must be a positive integer. Please enter a valid number.")
+                return
+
+            success = self.service.delete_task(task_id)
+            if success:
+                print(f"Task {task_id} deleted successfully")
+            else:
+                print(f"Error: Task with ID {task_id} not found. Please check the task ID and try again.", file=sys.stderr)
+        except Exception as e:
+            print(f"Error: {e}", file=sys.stderr)
 
     def handle_add(self, args) -> int:
         """
