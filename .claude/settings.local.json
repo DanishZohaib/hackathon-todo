@@ -1,29 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git fetch --all --prune)",
-      "Bash(pwsh -File .specify/scripts/powershell/create-new-feature.ps1 -Json -ShortName \"todo-phase1-specs\" -Number 1 \"Specification for Phase I of the Todo project: In-Memory Task Model, CRUD Operations, Completion Status Management, CLI Interaction, Error Handling & Validation\")",
-      "Bash(echo $SPECIFY_FEATURE)",
-      "Bash(python src/cli/main.py --help)",
-      "Bash(python -m src.cli.main:*)",
-      "Bash(python test_functionality.py)",
-      "Bash(python test_full_functionality.py)",
-      "Bash(python test_list_functionality.py)",
-      "Bash(python test_complete_functionality.py)",
-      "Bash(python test_delete_functionality.py)",
-      "Bash(python test_error_handling.py)",
-      "Bash(python final_validation_test.py)",
-      "Bash(python test_cli_commands.py)",
-      "Bash(python demo.py)",
-      "Bash(dir /s)",
-      "Bash(.powershell -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
-      "Bash(pwsh -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
-      "Bash(git rev-parse --git-dir)",
-      "Bash(python debug_test.py)",
-      "Bash(pwsh -File .specify/scripts/powershell/create-new-feature.ps1 -Json -ShortName \"interactive-cli-mode\" -Number 1 \"A usability gap has been identified in Phase I: When the application is launched without arguments, it exits immediately without allowing task interaction. You must define a new specification to address this issue. New Spec Required Spec 008: Interactive CLI Mode Fallback Rules: Do NOT modify existing specs Do NOT break command-based usage Behavior must remain deterministic Must remain Phase I only Create the new spec and store it in specs-history/.\")",
-      "Bash(mkdir -p specs-history/)",
-      "Bash(timeout 5s python -m src.cli.main)",
-      "Bash(ls -la *.md)"
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Bash(python:*)",
+      "Bash(git:*)",
+      "Bash(npm:*)",
+      "Bash(mkdir -p specs/003-backend-foundation)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(ALEMBIC_FORCE_OFFLINE=1 python -m alembic revision --autogenerate -m \"Initial migration for user and task models\")",
+      "Bash(npx browserslist@latest --update-db)",
+      "Bash(node --version)",
+      "Bash(pip install -r requirements.txt)",
+      "Bash(pip install fastapi uvicorn sqlalchemy sqlmodel pydantic pydantic-settings passlib python-jose python-multipart alembic python-dotenv pytest httpx)"
     ]
   }
 }

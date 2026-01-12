@@ -41,6 +41,15 @@ venv.bak/
 env.bak/
 venv.bak/
 
+# Backend
+backend/__pycache__/
+backend/*.pyc
+backend/venv/
+backend/.venv/
+backend/.env
+backend/*.db
+backend/*.db-journal
+
 # IDE
 .vscode/
 .idea/
@@ -48,6 +57,17 @@ venv.bak/
 *.swo
 *~
 .DS_Store
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.next/
+frontend/out/
 
 # OS
 .DS_Store
