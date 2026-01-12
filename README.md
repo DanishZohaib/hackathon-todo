@@ -1,79 +1,152 @@
-# Todo CLI Application - Phase I
+# Todo Application - Phase II
 
-This is a command-line interface (CLI) todo application built as Phase I of a multi-phase system. It provides basic todo functionality with in-memory storage, demonstrating architectural discipline and clean separation of concerns.
+A full-stack web application with persistent storage, authentication, and RESTful API built as Phase II of a multi-phase system. This phase extends the Phase I CLI application to include multi-user access, persistent storage, web interface, and authentication.
 
 ## Features
 
+### Phase I Features (In-Memory CLI)
 - Add new tasks with descriptions
 - List all tasks with their status
 - Mark tasks as complete
 - Delete tasks
 - Robust error handling
+- Interactive and command-line interfaces
+
+### Phase II Features (Web App with Persistence)
+- Multi-user access with registration and authentication
+- Persistent storage using PostgreSQL
+- Task management (create, read, update, delete)
+- Task completion tracking
+- Task priority management (low, medium, high)
+- Task filtering and search
+- Responsive web interface
+- RESTful API with JWT authentication
+
+## Tech Stack
+
+### Backend
+- Python 3.11
+- FastAPI
+- PostgreSQL (via Neon)
+- SQLAlchemy/SQLModel
+- JWT-based authentication
+- Pydantic for data validation
+
+### Frontend
+- React
+- React Router
+- Tailwind CSS
+- Axios for API communication
 
 ## Requirements
 
+### Backend
 - Python 3.11 or higher
-- No external dependencies (uses only standard library)
+- PostgreSQL database
 
-## Installation
+### Frontend
+- Node.js 18 or higher
+- npm or yarn
 
-No installation required. The application can be run directly with Python.
+## Setup
 
-## Usage
+### Backend
 
-### Interactive Mode (New!)
-Launch the application in interactive mode with a menu-driven interface:
-```bash
-python -m src.cli.main
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Set up environment variables in `.env`:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database credentials
+   ```
+
+5. Run the application:
+   ```bash
+   uvicorn src.main:app --reload --port 8000
+   ```
+
+### Frontend
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables in `.env`:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your backend API URL
+   ```
+
+4. Run the development server:
+   ```bash
+   npm start
+   ```
+
+## API Documentation
+
+The API documentation is available at `http://localhost:8000/docs` when the backend is running.
+
+## Project Structure
+
 ```
-This provides a user-friendly menu system for all todo operations without needing to remember command syntax.
+backend/
+├── src/
+│   ├── models/      # Data models (User, Task)
+│   ├── services/    # Business logic (AuthService, TaskService, UserService)
+│   ├── api/         # API routes (auth_router, task_router)
+│   ├── database/    # Database connection and migrations
+│   ├── config/      # Configuration settings
+│   └── utils/       # Utility functions
+└── tests/           # Test files
 
-### Command Mode
-Use traditional command-line interface (still fully supported):
-```bash
-# Add a new task
-python -m src.cli.main add "Task description here"
-
-# List all tasks
-python -m src.cli.main list
-
-# Complete a task
-python -m src.cli.main complete <task_id>
-
-# Delete a task
-python -m src.cli.main delete <task_id>
-
-# Get help
-python -m src.cli.main --help
+frontend/
+├── src/
+│   ├── components/  # React components (task list, form, toggle)
+│   ├── pages/       # Page components (signup, signin, dashboard)
+│   ├── services/    # API services (auth, task)
+│   ├── context/     # React context (auth context)
+│   ├── utils/       # Utility functions
+│   └── public/      # Static assets
 ```
-
-## Architecture
-
-The application follows a clean architecture with separation of concerns:
-
-- **Models** (`src/models/`): Data structures only, no business logic
-- **Services** (`src/services/`): Business logic and in-memory storage
-- **CLI** (`src/cli/`): User interface and command parsing
 
 ## Design Principles
 
 - **Spec-Driven Development**: All functionality based on written specifications
-- **Separation of Concerns**: Clear boundaries between models, services, and CLI
-- **Simplicity Over Prematurity**: No premature optimization beyond Phase I requirements
-- **Forward Compatibility**: Architecture supports evolution to web app, AI integration, and cloud deployment
+- **Separation of Concerns**: Clear boundaries between models, services, and API layers
+- **API-First Design**: All business operations exposed via RESTful APIs
+- **Persistence with Discipline**: PostgreSQL is single source of truth
+- **Authentication Boundary**: Every task belongs to exactly one user
+- **Stateless Backend**: Backend services are stateless
+- **Forward Compatibility**: Architecture supports evolution to AI integration and cloud deployment
 
-## Limitations
+## Phase II Completion
 
-- In-memory storage only (tasks are lost when the application exits)
-- Single-user, local execution
-- No persistence to file or database
+This Phase II implementation:
+- Delivers a multi-user web application with persistent storage
+- Implements secure authentication and user isolation
+- Provides a responsive web interface for task management
+- Follows RESTful API design principles
+- Maintains the clean architecture established in Phase I
+- Sets foundation for future phases with AI and cloud capabilities
 
-## Phase I Completion
-
-This Phase I implementation:
-- Delivers a robust, clean in-memory CLI Todo application
-- Demonstrates architectural discipline
-- Is easy to extend for future phases
-- Is stable and predictable
-
-Future phases will add persistence, web interfaces, AI features, and cloud deployment capabilities.
+Future phases will add AI features, chatbot integration, and cloud deployment capabilities.

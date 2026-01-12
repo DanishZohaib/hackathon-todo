@@ -1,11 +1,11 @@
 <!--
 Sync Impact Report:
-- Version change: 1.0.0 → 1.1.0
-- Modified principles: Added new Phase I specific principles for CLI usability
-- Added sections: Human-Friendly Identifiers, CLI Usability, Backward Simplicity, Non-Breaking Evolution
+- Version change: 1.1.0 → 1.2.0
+- Modified principles: Added new Phase II specific principles for API-First Design, Persistence, Authentication, and Statelessness
+- Added sections: API-First Design, Persistence with Discipline, Authentication Boundary, Stateless Backend, Spec Supremacy Continues
 - Removed sections: None
 - Templates requiring updates: ⚠ pending - plan-template.md, spec-template.md, tasks-template.md
-- Follow-up TODOs: Update templates to align with new principles
+- Follow-up TODOs: Update templates to align with new Phase II principles
 -->
 # Todo System Constitution
 
@@ -13,13 +13,13 @@ Sync Impact Report:
 
 The Todo system will evolve across 5 phases:
 
-1. CLI In-Memory Application (current)
-2. Full-Stack Web App with Persistence
+1. CLI In-Memory Application
+2. Full-Stack Web App with Persistence (current)
 3. AI Chatbot using MCP & Agents
 4. Local Kubernetes Deployment
 5. Production Cloud & Event-Driven Architecture
 
-Phase I is the foundation. All decisions made in earlier phases must not block future phases.
+Phase I and Phase II are the foundation. All decisions made in earlier phases must not block future phases.
 
 ## Core Principles
 
@@ -30,7 +30,7 @@ No code may exist without a written specification. Specifications are immutable 
 Models contain no business logic. Services contain no I/O or CLI code. CLI is a thin interface layer only. Business logic must be isolated in service layers, data models must be pure data containers, and presentation layers must only handle user interaction.
 
 ### III. Simplicity Over Prematurity
-No databases in Phase I. No premature optimization or complex architecture that doesn't match the current phase requirements. Implement the simplest solution that meets current phase needs while keeping future phases possible. Follow YAGNI (You Aren't Gonna Need It) principles.
+No premature optimization or complex architecture that doesn't match the current phase requirements. Implement the simplest solution that meets current phase needs while keeping future phases possible. Follow YAGNI (You Aren't Gonna Need It) principles.
 
 ### IV. Forward Compatibility
 All architectural decisions must consider future phase requirements. No implementation choices that would block evolution to web app, AI integration, or cloud deployment. APIs, data structures, and interfaces must be designed with extensibility in mind.
@@ -55,16 +55,33 @@ No command may accept ambiguous identifiers (e.g., description text). All destru
 ### X. Non-Breaking Evolution
 ID changes must not alter business logic semantics. Service layer must remain UI-agnostic.
 
+## Phase II Specific Principles
+
+### XI. API-First Design
+All business operations MUST be exposed via RESTful APIs. Frontend MUST NOT bypass backend logic. All functionality must be accessible through well-defined APIs to support web interface and future client implementations.
+
+### XII. Persistence with Discipline
+PostgreSQL is the single source of truth. No in-memory task state in Phase II. Database schema must mirror domain model. All data must persist across application restarts and be available to multiple users.
+
+### XIII. Authentication Boundary
+Every task MUST belong to exactly one user. Unauthorized access MUST be impossible. Auth logic MUST NOT leak into business logic. Security boundaries must be clearly defined and enforced at the API layer.
+
+### XIV. Stateless Backend
+Backend services must be stateless. All state lives in database or auth provider. The application must be able to scale horizontally without shared state between instances.
+
+### XV. Spec Supremacy Continues
+No API, page, or table without a spec. No schema changes without a spec. The specification-first approach continues into Phase II with additional rigor around API contracts and database schemas.
+
 ## Additional Constraints
 
-Technology choices must support the evolution from CLI → Web → AI → Kubernetes → Cloud. Core business logic must remain platform-agnostic. Data models should be designed to support eventual persistence and synchronization. All external dependencies must be evaluated for long-term maintainability and phase evolution support.
+Technology choices must support the evolution from CLI → Web → AI → Kubernetes → Cloud. Core business logic must remain platform-agnostic. Data models should be designed to support eventual persistence and synchronization. All external dependencies must be evaluated for long-term maintainability and phase evolution support. Multi-user access, persistent storage, web interface, and authentication must be implemented according to the new Phase II principles.
 
 ## Development Workflow
 
-All features must begin with specification in the appropriate spec file. Code reviews must verify constitution compliance. Each commit must reference corresponding specification items. Breaking changes to public interfaces require explicit approval and migration planning. All changes must pass existing tests before merging.
+All features must begin with specification in the appropriate spec file. Code reviews must verify constitution compliance. Each commit must reference corresponding specification items. Breaking changes to public interfaces require explicit approval and migration planning. All changes must pass existing tests before merging. API contracts and database schemas must be specified before implementation.
 
 ## Governance
 
 This constitution supersedes all other development practices. Amendments require explicit approval and documentation of the change rationale. All PRs and code reviews must verify compliance with these principles. Complexity must be justified with clear benefits to current or future phases. The constitution must be consulted when making architectural decisions.
 
-**Version**: 1.1.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-01
+**Version**: 1.2.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-04

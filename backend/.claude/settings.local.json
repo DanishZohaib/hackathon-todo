@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s *.json *.txt *.toml *.lock *.yaml *.yml)",
+      "Bash(findstr -i \"requirement\\\\|package\\\\|poetry\\\\|pip\\\\|lock\\\\|config\")",
+      "Bash(dir /s /b package.json)",
+      "Bash(ls -la E:Python VSCodeHakathonGIAIC Hakathonhackathon-todobackendrequirements*.txt)",
+      "Bash(dir ....)",
+      "Bash(dir \"..\\\\frontend\")",
+      "Bash(dir \"E:\\\\Python VSCode\\\\Hakathon\\\\GIAIC Hakathon\\\\hackathon-todo\\\\backend\" /B)",
+      "Bash(dir \"..\\\\..\")",
+      "Bash(dir \"E:\\\\Python VSCode\\\\Hakathon\\\\GIAIC Hakathon\\\\hackathon-todo\\\\backend\\\\alembic\" /B /S)",
+      "Bash(dir \"E:\\\\Python VSCode\\\\Hakathon\\\\GIAIC Hakathon\\\\hackathon-todo\\\\backend\\\\alembic\\\\versions\" /B)",
+      "Bash(findstr -i \"run\\\\|start\\\\|server\\\\|main\")",
+      "Bash(dir E:Python VSCodeHakathonGIAIC Hakathonhackathon-todobackend /s)",
+      "Bash(dir \"E:\\\\Python VSCode\\\\Hakathon\\\\GIAIC Hakathon\\\\hackathon-todo\\\\backend\")",
+      "Bash(python -m pytest E:Python VSCodeHakathonGIAIC Hakathonhackathon-todobackendtests -v)",
+      "Bash(python -c \"from src.main import app; print\\(''App imported successfully''\\)\")",
+      "Bash(python -m pytest \"E:\\\\Python VSCode\\\\Hakathon\\\\GIAIC Hakathon\\\\hackathon-todo\\\\backend\\\\tests\\\\contract\\\\test_auth.py\" -v)",
+      "Bash(dir \"E:\\\\Python VSCode\\\\Hakathon\\\\GIAIC Hakathon\\\\hackathon-todo\\\\backend\\\\alembic\")",
+      "Bash(python -c \"\nimport sys\nsys.path.insert\\(0, ''E:/Python VSCode/Hakathon/GIAIC Hakathon/hackathon-todo/backend''\\)\n\nfrom src.main import app\nprint\\(''Application imported successfully''\\)\n\n# Check if we can create the database tables\nfrom src.database.connection import engine, Base\nfrom src.models.user import User\nfrom src.models.task import Task\n\n# Create all tables\nBase.metadata.create_all\\(bind=engine\\)\nprint\\(''Database tables created successfully''\\)\n\")",
+      "Bash(python -c \"\nimport sys\nsys.path.insert\\(0, ''E:/Python VSCode/Hakathon/GIAIC Hakathon/hackathon-todo/backend''\\)\n\nfrom src.database.connection import engine, Base\nfrom src.models.user import User\nfrom src.models.task import Task\nfrom sqlalchemy.orm import sessionmaker\nfrom sqlalchemy import inspect\n\n# Create tables\nBase.metadata.create_all\\(bind=engine\\)\n\n# Check if tables were created\ninspector = inspect\\(engine\\)\ntables = inspector.get_table_names\\(\\)\nprint\\(f''Database tables: {tables}''\\)\n\n# Test creating a session\nSessionLocal = sessionmaker\\(autocommit=False, autoflush=False, bind=engine\\)\nsession = SessionLocal\\(\\)\nprint\\(''Database session created successfully''\\)\n\n# Close session\nsession.close\\(\\)\nprint\\(''Database connection test completed successfully''\\)\n\")",
+      "Bash(python -c \"\nimport sys\nsys.path.insert\\(0, ''E:/Python VSCode/Hakathon/GIAIC Hakathon/hackathon-todo/backend''\\)\n\nfrom src.main import app\nfrom fastapi.testclient import TestClient\n\n# Import models to register them with SQLAlchemy\nfrom src.database.connection import Base\nfrom src.models.user import User\nfrom src.models.task import Task\n\n# Create a test client without overriding dependencies initially\ntry:\n    client = TestClient\\(app\\)\n    print\\(''Test client created successfully''\\)\n    \n    # Test the root endpoint\n    response = client.get\\(''/''\\)\n    print\\(f''Root endpoint status: {response.status_code}''\\)\n    print\\(f''Root endpoint response: {response.json\\(\\)}''\\)\n    \n    # Test the health endpoint\n    response = client.get\\(''/health''\\)\n    print\\(f''Health endpoint status: {response.status_code}''\\)\n    print\\(f''Health endpoint response: {response.json\\(\\)}''\\)\n    \nexcept Exception as e:\n    print\\(f''Error: {e}''\\)\n    import traceback\n    traceback.print_exc\\(\\)\n\")",
+      "Bash(python -c \"\n# Test the app imports and basic functionality\nimport sys\nsys.path.insert\\(0, ''E:/Python VSCode/Hakathon/GIAIC Hakathon/hackathon-todo/backend''\\)\n\n# Import and check all main modules\nfrom src.main import app\nfrom src.config import settings\nfrom src.database.connection import engine, Base\nfrom src.services.auth_service import AuthService\nfrom src.services.task_service import TaskService\nfrom src.models.user import User, UserCreate, UserLogin\nfrom src.models.task import Task, TaskCreate, TaskUpdate\n\nprint\\(''✓ All modules imported successfully''\\)\n\n# Check configuration\nprint\\(f''✓ App title: {app.title}''\\)\nprint\\(f''✓ Database URL: {settings.DATABASE_URL}''\\)\nprint\\(f''✓ Secret key length: {len\\(settings.SECRET_KEY\\)} chars''\\)\n\n# Check services\nauth_service = AuthService\\(\\)\nprint\\(''✓ Auth service initialized''\\)\n\n# Check models\nuser_create = UserCreate\\(email=''test@example.com'', password=''password'', name=''Test User''\\)\nprint\\(''✓ Models instantiated successfully''\\)\n\n# Check routes are registered\nroutes = [route.path for route in app.routes]\nprint\\(f''✓ Registered routes: {len\\(routes\\)} routes found''\\)\nprint\\(''✓ Application is ready to run''\\)\n\")",
+      "Bash(python -c \"\n# Test the app imports and basic functionality\nimport sys\nsys.path.insert\\(0, ''E:/Python VSCode/Hakathon/GIAIC Hakathon/hackathon-todo/backend''\\)\n\n# Import and check all main modules\nfrom src.main import app\nfrom src.config import settings\nfrom src.database.connection import engine, Base\nfrom src.services.auth_service import AuthService\nfrom src.services.task_service import TaskService\nfrom src.models.user import User, UserCreate, UserLogin\nfrom src.models.task import Task, TaskCreate, TaskUpdate\n\nprint\\(''All modules imported successfully''\\)\n\n# Check configuration\nprint\\(''App title:'', app.title\\)\nprint\\(''Database URL:'', settings.DATABASE_URL\\)\nprint\\(''Secret key length:'', len\\(settings.SECRET_KEY\\), ''chars''\\)\n\n# Check services\nauth_service = AuthService\\(\\)\nprint\\(''Auth service initialized''\\)\n\n# Check models\nuser_create = UserCreate\\(email=''test@example.com'', password=''password'', name=''Test User''\\)\nprint\\(''Models instantiated successfully''\\)\n\n# Check routes are registered\nroutes = [route.path for route in app.routes]\nprint\\(''Registered routes:'', len\\(routes\\), ''routes found''\\)\nprint\\(''Application is ready to run''\\)\n\")",
+      "Bash(uvicorn main:app --reload --host 127.0.0.1 --port 8001)",
+      "Bash(python -m uvicorn src.main:app --reload --host 127.0.0.1 --port 8001)",
+      "Bash(set PYTHONPATH=%PYTHONPATH%)",
+      "Bash(.)",
+      "Bash(uvicorn src.main:app --reload --host 127.0.0.1 --port 8001)",
+      "Bash($env:PYTHONPATH = \".;src\")"
+    ]
+  }
+}
