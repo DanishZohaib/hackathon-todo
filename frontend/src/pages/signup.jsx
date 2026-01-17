@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/auth';
+import { authService } from '../services/authService';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const Signup = () => {
     setError('');
 
     try {
-      await authService.signup(formData);
+      await authService.register(formData);
       // Redirect to dashboard after successful signup
       navigate('/signin');
     } catch (err) {

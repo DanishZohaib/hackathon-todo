@@ -19,6 +19,9 @@ class AuthService:
         return self.pwd_context.verify(plain_password, hashed_password)
 
     def get_password_hash(self, password: str) -> str:
+        # Truncate password if longer than 72 characters to avoid bcrypt limitations
+        if len(password) > 72:
+            password = password[:72]
         return self.pwd_context.hash(password)
 
     def create_access_token(self, data: dict, expires_delta: Optional[timedelta] = None):

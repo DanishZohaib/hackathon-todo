@@ -23,8 +23,8 @@ def get_current_user(
     token = credentials.credentials
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
+        user_email: str = payload.get("sub")
+        if user_email is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
@@ -37,7 +37,7 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = auth_service.get_user_by_email(db, user_id)
+    user = auth_service.get_user_by_email(db, user_email)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -94,3 +94,16 @@ def logout_user():
     # In a real implementation, you might want to invalidate the token
     # For now, we'll just return a success message
     return {"message": "Successfully signed out"}
+
+
+@auth_router.get("/profile", response_model=UserResponse)
+def get_profile(current_user: UserPublic = Depends(get_current_user)):
+    """Get current user's profile information"""
+    return UserResponse(
+        id=current_user.id,
+        email=current_user.email,
+        name=current_user.name,
+        created_at=current_user.created_at,
+        updated_at=current_user.updated_at,
+        is_active=current_user.is_active
+    )

@@ -13,7 +13,13 @@
       "Bash(npx browserslist@latest --update-db)",
       "Bash(node --version)",
       "Bash(pip install -r requirements.txt)",
-      "Bash(pip install fastapi uvicorn sqlalchemy sqlmodel pydantic pydantic-settings passlib python-jose python-multipart alembic python-dotenv pytest httpx)"
+      "Bash(pip install fastapi uvicorn sqlalchemy sqlmodel pydantic pydantic-settings passlib python-jose python-multipart alembic python-dotenv pytest httpx)",
+      "Bash(curl -X POST \"http://127.0.0.1:8001/auth/signup\" -H \"Content-Type: application/json\" -d \"{\"\"email\"\":\"\"testuser@example.com\"\",\"\"password\"\":\"\"testpassword123\"\",\"\"name\"\":\"\"Test User\"\"}\")",
+      "Bash(curl -s http://127.0.0.1:8000/health)",
+      "Bash(curl -X POST http://127.0.0.1:8000/auth/signup -H \"Content-Type: application/json\" -d '{\"\"email\"\": \"\"test@example.com\"\", \"\"password\"\": \"\"testpassword\"\", \"\"name\"\": \"\"Test User\"\"}')",
+      "Bash(curl -X POST http://127.0.0.1:8000/auth/signup -H \"Content-Type: application/json\" -d '{\"\"email\"\": \"\"test2@example.com\"\", \"\"password\"\": \"\"shortpass\"\", \"\"name\"\": \"\"Test User 2\"\"}')",
+      "Bash(curl -X POST http://127.0.0.1:8000/auth/signup -H \"Content-Type: application/json\" -d '{\"\"email\"\": \"\"testuser@example.com\"\", \"\"password\"\": \"\"securepassword123\"\", \"\"name\"\": \"\"Test User\"\"}')",
+      "Bash(curl -X POST http://127.0.0.1:8000/auth/signin -H \"Content-Type: application/json\" -d '{\"\"email\"\": \"\"testuser@example.com\"\", \"\"password\"\": \"\"securepassword123\"\"}')"
     ]
   }
 }
