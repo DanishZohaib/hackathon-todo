@@ -32,7 +32,7 @@ class User(SQLModel, table=True):
 
 class UserCreate(SQLModel):
     email: str
-    password: str
+    password: str = Field(min_length=1, max_length=72)
     name: Optional[str] = None
 
 

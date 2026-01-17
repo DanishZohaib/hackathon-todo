@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { taskService } from '../services/api';
+import { taskService } from '../services/taskService';
 import TaskList from '../components/tasks/task-list';
 import TaskForm from '../components/tasks/task-form';
-import { authService } from '../services/auth';
+import { authService } from '../services/authService';
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);

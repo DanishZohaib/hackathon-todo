@@ -29,11 +29,11 @@ export const authService = {
       // Call the backend logout endpoint
       await api.post('/auth/signout');
       // Remove the token from local storage
-      localStorage.removeItem('authToken');
+      localStorage.removeItem('token');
       return { success: true };
     } catch (error) {
       // Even if the backend call fails, still remove the local token
-      localStorage.removeItem('authToken');
+      localStorage.removeItem('token');
       console.error('Error during logout:', error);
       return { success: true };
     }

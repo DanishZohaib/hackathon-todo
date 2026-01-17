@@ -3,18 +3,18 @@
 // Store auth token in local storage
 export const storeAuthToken = (token) => {
   if (token) {
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('token', token);
   }
 };
 
 // Get auth token from local storage
 export const getAuthToken = () => {
-  return localStorage.getItem('authToken');
+  return localStorage.getItem('token');
 };
 
 // Remove auth token from local storage (logout)
 export const removeAuthToken = () => {
-  localStorage.removeItem('authToken');
+  localStorage.removeItem('token');
 };
 
 // Check if user is authenticated
