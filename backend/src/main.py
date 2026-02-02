@@ -1,10 +1,29 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from sqlmodel import SQLModel
 from .api.auth_router import auth_router
 from .api.task_router import task_router
 from .config import settings
+from .database.connection import engine
 
+# Initialize rate limiter
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="Todo API", version="1.0.0")
+
+# Create database tables
+@app.on_event("startup")
+def on_startup():
+    SQLModel.metadata.create_all(bind=engine)
+
+# Add rate limit exception handler
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Add CORS middleware
 app.add_middleware(
@@ -26,3 +45,47 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+
+# Global exception handlers for consistent error responses
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error": {
+                "type": "http_exception",
+                "message": exc.detail if hasattr(exc, 'detail') else str(exc),
+                "status_code": exc.status_code
+            }
+        }
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=422,
+        content={
+            "error": {
+                "type": "validation_error",
+                "message": "Validation error occurred",
+                "details": exc.errors(),
+                "status_code": 422
+            }
+        }
+    )
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": {
+                "type": "internal_server_error",
+                "message": "An unexpected error occurred",
+                "status_code": 500
+            }
+        }
+    )

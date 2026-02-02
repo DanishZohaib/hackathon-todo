@@ -10,7 +10,8 @@ class BaseResponse(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    token: str
+    access_token: str
+    refresh_token: str
     token_type: str = "bearer"
 
 
@@ -44,3 +45,11 @@ class TaskListResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     error: dict
+
+
+class ForgotPasswordResponse(BaseModel):
+    message: str
+
+
+class ResetPasswordResponse(BaseModel):
+    message: str
