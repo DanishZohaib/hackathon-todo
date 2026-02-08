@@ -13,10 +13,10 @@ interface UseTodosReturn {
   todos: Todo[];
   loading: boolean;
   error: string | null;
-  addTodo: (title: string) => Promise<void>;
+  addTodo: (todoData: { title: string; description?: string }) => Promise<void>;
   toggleTodo: (id: string) => Promise<void>;
   deleteTodo: (id: string) => Promise<void>;
-  updateTodo: (id: string, title: string) => Promise<void>;
+  updateTodo: (id: string, title: string, description?: string) => Promise<void>;
   deleteCompletedTodos: () => Promise<void>;
   refreshTodos: () => Promise<void>;
 }
@@ -45,10 +45,10 @@ export const useTodos = (): UseTodosReturn => {
     }
   };
 
-  const addTodo = async (title: string) => {
+  const addTodo = async (todoData: { title: string; description?: string }) => {
     try {
       setError(null);
-      const newTodo = await createTodo({ title });
+      const newTodo = await createTodo(todoData);
       setTodos(prev => [newTodo, ...prev]);
     } catch (err: any) {
       setError(err.message || "Failed to add todo. Please try again.");
@@ -80,10 +80,14 @@ export const useTodos = (): UseTodosReturn => {
     }
   };
 
-  const updateTodoById = async (id: string, title: string) => {
+  const updateTodoById = async (id: string, title: string, description?: string) => {
     try {
       setError(null);
-      const updatedTodo = await updateTodo(id, { title });
+      const updateData: { title?: string; description?: string } = { title };
+      if (description !== undefined) {
+        updateData.description = description;
+      }
+      const updatedTodo = await updateTodo(id, updateData);
       setTodos(prev =>
         prev.map(todo => (todo.id === id ? updatedTodo : todo)),
       );

@@ -7,12 +7,13 @@ interface TodoCardProps {
   todo: Todo;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  onEdit?: (id: string, title: string) => void;
+  onEdit?: (id: string, title: string, description?: string) => void;
 }
 
 const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(todo.title);
+  const [editDescription, setEditDescription] = useState(todo.description || "");
   const [isDeleting, setIsDeleting] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
 
@@ -39,7 +40,7 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
 
   const handleSave = () => {
     if (onEdit && editValue.trim()) {
-      onEdit(todo.id, editValue);
+      onEdit(todo.id, editValue, editDescription);
       setIsEditing(false);
     }
   };
@@ -99,6 +100,13 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
                 autoFocus
                 className="w-full px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--pak-green-primary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--pak-green-primary)]"
               />
+              <input
+                type="text"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                className="w-full px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--pak-green-primary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--pak-green-primary)]"
+                placeholder="Description (optional)"
+              />
               <div className="flex gap-2 mt-2">
                 <Button size="sm" onClick={handleSave}>Save</Button>
                 <Button variant="outline" size="sm" onClick={handleCancel}>Cancel</Button>
@@ -126,6 +134,11 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
                   {todo.completed ? "Completed" : "Pending"}
                 </span>
               </div>
+              {todo.description && (
+                <div className="text-sm text-[var(--text-secondary)] mb-1 italic">
+                  {todo.description}
+                </div>
+              )}
               <div className="text-xs text-[var(--text-secondary)]">
                 Created: {new Date(todo.createdAt).toLocaleDateString()}
               </div>

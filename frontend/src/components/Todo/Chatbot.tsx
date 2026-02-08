@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { useTodos } from "../../hooks/useTodos";
+import { useTodoContext } from "../../context/TodoContext";
 import { getAuthToken } from "../../services/apiClient";
 
 interface Message {
@@ -17,7 +17,7 @@ const Chatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
-  const { addTodo, toggleTodo, deleteTodo, updateTodo } = useTodos();
+  const { addTodo, toggleTodo, deleteTodo, updateTodo, refreshTodos } = useTodoContext();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -74,44 +74,86 @@ const Chatbot: React.FC = () => {
 
       // Handle any tool calls that were executed
       if (data.tool_calls && Array.isArray(data.tool_calls)) {
+        const promises: Promise<void>[] = [];
+
         data.tool_calls.forEach((toolCall: any) => {
           try {
             // Process the tool call based on the function name
             switch (toolCall.function?.name) {
-              case "add_task":
-                if (toolCall.function.arguments) {
-                  const args = JSON.parse(toolCall.function.arguments);
-                  // Convert to the proper format expected by addTodo
-                  addTodo(args.title || "Untitled task");
+            case "add_task":
+              if (toolCall.function.arguments) {
+                let args;
+                try {
+                  args = JSON.parse(toolCall.function.arguments);
+                } catch (parseError) {
+                  console.error("Error parsing arguments for add_task:", parseError);
+                  return; // This will exit the callback function for this iteration
                 }
-                break;
-              case "complete_task":
-                if (toolCall.function.arguments) {
-                  const args = JSON.parse(toolCall.function.arguments);
-                  toggleTodo(args.task_id);
+                // Convert to the proper format expected by addTodo
+                const todoData = {
+                  title: args.title || "Untitled task",
+                  description: args.description || "",
+                };
+                promises.push(addTodo(todoData));
+              }
+              break;
+            case "complete_task":
+              if (toolCall.function.arguments) {
+                let args;
+                try {
+                  args = JSON.parse(toolCall.function.arguments);
+                } catch (parseError) {
+                  console.error("Error parsing arguments for complete_task:", parseError);
+                  return; // Skip this tool call if arguments are malformed
                 }
-                break;
-              case "delete_task":
-                if (toolCall.function.arguments) {
-                  const args = JSON.parse(toolCall.function.arguments);
-                  deleteTodo(args.task_id);
+                promises.push(toggleTodo(args.task_id));
+              }
+              break;
+            case "delete_task":
+              if (toolCall.function.arguments) {
+                let args;
+                try {
+                  args = JSON.parse(toolCall.function.arguments);
+                } catch (parseError) {
+                  console.error("Error parsing arguments for delete_task:", parseError);
+                  return; // Skip this tool call if arguments are malformed
                 }
-                break;
-              case "update_task":
-                if (toolCall.function.arguments) {
-                  const args = JSON.parse(toolCall.function.arguments);
-                  // Convert to the proper format expected by updateTodo
-                  updateTodo(args.task_id, args.title || "Untitled task");
+                promises.push(deleteTodo(args.task_id));
+              }
+              break;
+            case "update_task":
+              if (toolCall.function.arguments) {
+                let args;
+                try {
+                  args = JSON.parse(toolCall.function.arguments);
+                } catch (parseError) {
+                  console.error("Error parsing arguments for update_task:", parseError);
+                  return; // Skip this tool call if arguments are malformed
                 }
-                break;
-              case "list_tasks":
-                // Just showing the list, no action needed
-                break;
+                // Convert to the proper format expected by updateTodo
+                promises.push(updateTodo(args.task_id, args.title || "Untitled task", args.description));
+              }
+              break;
+            case "list_tasks":
+              // Just showing the list, no action needed
+              break;
             }
           } catch (error) {
             console.error("Error processing tool call:", error);
           }
         });
+
+        // Wait for all operations to complete, then refresh the todos
+        if (promises.length > 0) {
+          // Wait for all promises to resolve/reject before refreshing
+          // Use Promise.allSettled to ensure refresh happens regardless of operation outcomes
+          Promise.allSettled(promises).finally(() => {
+            // Add a small delay to ensure all state updates have settled before refreshing
+            setTimeout(() => {
+              refreshTodos && refreshTodos();
+            }, 100);
+          });
+        }
       }
     } catch (error) {
       console.error("Error sending message:", error);
