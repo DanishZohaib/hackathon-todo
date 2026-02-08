@@ -1,85 +1,52 @@
-# Todo Application - Phase II
+# Hackathon Todo Application - Phase III: AI Chatbot Integration
 
-A full-stack web application with persistent storage, authentication, and RESTful API built as Phase II of a multi-phase system. This phase extends the Phase I CLI application to include multi-user access, persistent storage, web interface, and authentication.
+This is a full-stack todo application with AI chatbot integration built as part of a hackathon project. The application consists of a React frontend and a FastAPI backend with PostgreSQL database.
 
-## Features
+## Project Structure
 
-### Phase I Features (In-Memory CLI)
-- Add new tasks with descriptions
-- List all tasks with their status
-- Mark tasks as complete
-- Delete tasks
-- Robust error handling
-- Interactive and command-line interfaces
+- `backend/` - FastAPI backend with authentication, todo management, and AI chatbot
+- `frontend/` - React TypeScript frontend with Tailwind CSS
+- `specs/` - Specification documents for the various features
+- `history/` - Prompt history records and development artifacts
 
-### Phase II Features (Web App with Persistence)
-- Multi-user access with registration and authentication
-- Persistent storage using PostgreSQL
-- Task management (create, read, update, delete)
-- Task completion tracking
-- Task priority management (low, medium, high)
-- Task filtering and search
-- Responsive web interface
-- RESTful API with JWT authentication
+## Phase 3: AI Chatbot Integration
 
-## Tech Stack
+The application is currently in Phase 3, which integrates an AI chatbot using Model Context Protocol (MCP) to interact with the todo system using natural language.
 
-### Backend
-- Python 3.11
-- FastAPI
-- PostgreSQL (via Neon)
-- SQLAlchemy/SQLModel
-- JWT-based authentication
-- Pydantic for data validation
+## Getting Started
 
-### Frontend
-- React
-- React Router
-- Tailwind CSS
-- Axios for API communication
-
-## Requirements
-
-### Backend
-- Python 3.11 or higher
-- PostgreSQL database
-
-### Frontend
-- Node.js 18 or higher
-- npm or yarn
-
-## Setup
-
-### Backend
+### Backend Setup
 
 1. Navigate to the backend directory:
    ```bash
    cd backend
    ```
 
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Set up environment variables in `.env`:
+3. Set up environment variables by copying the sample:
    ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
+   cp .env.example .env  # if available
    ```
 
-5. Run the application:
+   Make sure to set a strong SECRET_KEY in the .env file:
    ```bash
-   uvicorn src.main:app --reload --port 8000
+   SECRET_KEY=your_very_long_secret_key_here_at_least_32_characters
    ```
 
-### Frontend
+4. Start the backend server:
+   ```bash
+   python run_server.py
+   # or alternatively:
+   python -m uvicorn src.main:app --reload --port 8000
+   ```
+
+   The backend will be available at `http://localhost:8000`
+
+### Frontend Setup
 
 1. Navigate to the frontend directory:
    ```bash
@@ -91,62 +58,65 @@ A full-stack web application with persistent storage, authentication, and RESTfu
    npm install
    ```
 
-3. Set up environment variables in `.env`:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your backend API URL
-   ```
-
-4. Run the development server:
+3. Start the development server:
    ```bash
    npm start
    ```
 
-## API Documentation
+   The frontend will be available at `http://localhost:3000`
 
-The API documentation is available at `http://localhost:8000/docs` when the backend is running.
+## API Endpoints
 
-## Project Structure
+- `GET /health` - Health check endpoint
+- `GET /docs` - Interactive API documentation (Swagger UI)
+- `GET /redoc` - Alternative API documentation (ReDoc)
 
-```
-backend/
-├── src/
-│   ├── models/      # Data models (User, Task)
-│   ├── services/    # Business logic (AuthService, TaskService, UserService)
-│   ├── api/         # API routes (auth_router, task_router)
-│   ├── database/    # Database connection and migrations
-│   ├── config/      # Configuration settings
-│   └── utils/       # Utility functions
-└── tests/           # Test files
+### Authentication Endpoints
+- `POST /auth/register` - User registration
+- `POST /auth/login` - User login
+- `POST /auth/logout` - User logout
 
-frontend/
-├── src/
-│   ├── components/  # React components (task list, form, toggle)
-│   ├── pages/       # Page components (signup, signin, dashboard)
-│   ├── services/    # API services (auth, task)
-│   ├── context/     # React context (auth context)
-│   ├── utils/       # Utility functions
-│   └── public/      # Static assets
-```
+### Todo Endpoints
+- `GET /todos` - Get all user's todos
+- `POST /todos` - Create a new todo
+- `PUT /todos/{id}` - Update a todo
+- `DELETE /todos/{id}` - Delete a todo
+- `PATCH /todos/{id}/complete` - Mark a todo as complete/incomplete
 
-## Design Principles
+### Chat Endpoints
+- `POST /chat/{user_id}/chat` - AI chatbot endpoint for natural language todo management
 
-- **Spec-Driven Development**: All functionality based on written specifications
-- **Separation of Concerns**: Clear boundaries between models, services, and API layers
-- **API-First Design**: All business operations exposed via RESTful APIs
-- **Persistence with Discipline**: PostgreSQL is single source of truth
-- **Authentication Boundary**: Every task belongs to exactly one user
-- **Stateless Backend**: Backend services are stateless
-- **Forward Compatibility**: Architecture supports evolution to AI integration and cloud deployment
+## Features
 
-## Phase II Completion
+1. **User Authentication** - Secure user registration and login
+2. **Todo Management** - Full CRUD operations for todo items
+3. **AI Chatbot Integration** - Natural language interaction for todo management
+4. **Rate Limiting** - Protection against API abuse
+5. **CORS Support** - Cross-origin resource sharing for frontend integration
+6. **Database Persistence** - PostgreSQL with SQLAlchemy/SQLModel ORM
 
-This Phase II implementation:
-- Delivers a multi-user web application with persistent storage
-- Implements secure authentication and user isolation
-- Provides a responsive web interface for task management
-- Follows RESTful API design principles
-- Maintains the clean architecture established in Phase I
-- Sets foundation for future phases with AI and cloud capabilities
+## Development
 
-Future phases will add AI features, chatbot integration, and cloud deployment capabilities.
+The application follows a spec-driven development approach with comprehensive documentation in the `specs/` directory.
+
+## Technologies Used
+
+### Backend
+- FastAPI
+- PostgreSQL
+- SQLAlchemy/SQLModel
+- JWT Authentication
+- OpenAI/MCP Integration
+
+### Frontend
+- React 18
+- TypeScript
+- Tailwind CSS
+- React Router
+- Axios
+
+## Phase Progression
+
+- **Phase 1**: In-memory CLI Todo Application
+- **Phase 2**: Full-stack web application with authentication
+- **Phase 3**: AI Chatbot integration with natural language processing

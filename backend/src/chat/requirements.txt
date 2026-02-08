@@ -1,0 +1,7 @@
+# Additional requirements for chat functionality
+openai>=1.0.0
+pydantic>=2.0.0
+fastapi>=0.100.0
+sqlmodel>=0.0.8
+uvicorn>=0.20.0
+nest-asyncio>=1.5.8

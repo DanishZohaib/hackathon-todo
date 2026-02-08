@@ -1,8 +1,10 @@
 import React from "react";
 import { useTodos } from "../hooks/useTodos";
+import { useAuth } from "../hooks/useAuth";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import TodoForm from "../components/Todo/TodoForm";
 import TodoList from "../components/Todo/TodoList";
+import Chatbot from "../components/Todo/Chatbot";
 import Button from "../components/UI/Button";
 import Card from "../components/UI/Card";
 
@@ -18,6 +20,8 @@ const Dashboard: React.FC = () => {
     deleteCompletedTodos,
   } = useTodos();
 
+  const { user } = useAuth();
+
   return (
     <DashboardLayout title="Todo Dashboard">
       {error && (
@@ -26,44 +30,55 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      <Card className="p-6 bg-[var(--bg-secondary)]">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">Manage Your Tasks</h2>
-            <p className="text-[var(--text-secondary)]">
-              {todos.length} {todos.length === 1 ? "task" : "tasks"} total
-            </p>
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Card className="p-6 bg-[var(--bg-secondary)]">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-[var(--text-primary)]">Manage Your Tasks</h2>
+                <p className="text-[var(--text-secondary)]">
+                  {todos.length} {todos.length === 1 ? "task" : "tasks"} total
+                </p>
+              </div>
 
-          {todos.some(todo => todo.completed) && (
-            <Button
-              variant="outline"
-              onClick={deleteCompletedTodos}
-              className="self-start"
-            >
-              Delete Completed
-            </Button>
-          )}
+              {todos.some(todo => todo.completed) && (
+                <Button
+                  variant="outline"
+                  onClick={deleteCompletedTodos}
+                  className="self-start"
+                >
+                  Delete Completed
+                </Button>
+              )}
+            </div>
+
+            <TodoForm
+              onAdd={addTodo}
+              loading={loading}
+            />
+
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--pak-green-primary)]"></div>
+              </div>
+            ) : (
+              <TodoList
+                todos={todos}
+                onToggle={toggleTodo}
+                onDelete={deleteTodo}
+                onEdit={updateTodo}
+              />
+            )}
+          </Card>
         </div>
 
-        <TodoForm
-          onAdd={addTodo}
-          loading={loading}
-        />
-
-        {loading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--pak-green-primary)]"></div>
-          </div>
-        ) : (
-          <TodoList
-            todos={todos}
-            onToggle={toggleTodo}
-            onDelete={deleteTodo}
-            onEdit={updateTodo}
-          />
-        )}
-      </Card>
+        <div>
+          <Card className="p-6 bg-[var(--bg-secondary)] h-full">
+            <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">AI Assistant</h2>
+            <Chatbot />
+          </Card>
+        </div>
+      </div>
     </DashboardLayout>
   );
 };

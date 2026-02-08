@@ -59,7 +59,12 @@
       "Bash(curl -X GET http://localhost:8000/todos/ -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZXd1c2VyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzcwMDY1OTY2LCJ0b2tlbl90eXBlIjoiYWNjZXNzIn0.RhwRnH285oF17TRvMy11W73OLnv3Ud9pbJuiXuJG-wM\")",
       "Bash(curl -X POST http://localhost:8000/todos/ -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZXd1c2VyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzcwMDY1OTY2LCJ0b2tlbl90eXBlIjoiYWNjZXNzIn0.RhwRnH285oF17TRvMy11W73OLnv3Ud9pbJuiXuJG-wM\" -d \"{\"\"title\"\": \"\"Test Task\"\", \"\"description\"\": \"\"This is a test task\"\"}\")",
       "Bash(curl -X PATCH http://localhost:8000/todos/5c109ec8-4040-4444-afb6-9d0b477371f6/toggle -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZXd1c2VyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzcwMDY1OTY2LCJ0b2tlbl90eXBlIjoiYWNjZXNzIn0.RhwRnH285oF17TRvMy11W73OLnv3Ud9pbJuiXuJG-wM\")",
-      "Bash(curl -X GET http://localhost:8000/todos/  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZXd1c2VyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzcwMDY1OTY2LCJ0b2tlbl90eXBlIjoiYWNjZXNzIn0.RhwRnH285oF17TRvMy11W73OLnv3Ud9pbJuiXuJG-wM\")"
+      "Bash(curl -X GET http://localhost:8000/todos/  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZXd1c2VyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzcwMDY1OTY2LCJ0b2tlbl90eXBlIjoiYWNjZXNzIn0.RhwRnH285oF17TRvMy11W73OLnv3Ud9pbJuiXuJG-wM\")",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(del:*)",
+      "Bash(curl:*)",
+      "Bash(npx tailwindcss -i src/index.css -o src/App.css --watch)"
     ]
   }
 }
