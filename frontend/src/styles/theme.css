@@ -5,6 +5,7 @@
   --pak-green-primary: #006600; /* Pakistan Green */
   --pak-green-secondary: #01411C; /* Darker Pakistan green */
   --pak-green-light: #00A651; /* Lighter green for accents */
+  --pak-green-hover: #005500; /* Hover state for buttons */
 
   /* Dark Theme Colors */
   --bg-primary: #121212; /* Deep charcoal background */
@@ -22,6 +23,7 @@
   --error-red: #CF6679; /* Muted red for errors */
 
   /* UI Elements */
+  --border-color: #333333; /* Border color for UI elements */
   --border-radius: 8px;
   --shadow-low: 0 1px 3px rgba(0, 0, 0, 0.2);
   --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.3);
