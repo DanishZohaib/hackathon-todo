@@ -4,7 +4,7 @@ import { apiRequest } from "./apiClient";
 // Get all todos for the authenticated user
 export const getTodos = async (): Promise<Todo[]> => {
   try {
-    const response = await apiRequest.get<{tasks: any[], total_count: number, limit: number, offset: number}>("/todos");
+    const response = await apiRequest.get<{tasks: any[], total_count: number, limit: number, offset: number}>("/todos/");
     // Transform backend response to match frontend Todo interface
     return response.data.tasks.map(task => ({
       id: task.id,
@@ -72,11 +72,12 @@ export const getTodoById = async (id: string): Promise<Todo> => {
 // Create a new todo
 export const createTodo = async (todoData: CreateTodoDto): Promise<Todo> => {
   try {
-    const response = await apiRequest.post<any>("/todos", todoData);
+    const response = await apiRequest.post<any>("/todos/", todoData);
     const task = response.data;
     return {
       id: task.id,
       title: task.title,
+      description: task.description,
       completed: task.is_completed, // Map backend field to frontend field
       createdAt: task.created_at,   // Map backend field to frontend field
       updatedAt: task.updated_at,   // Map backend field to frontend field
@@ -108,6 +109,7 @@ export const updateTodo = async (id: string, todoData: UpdateTodoDto): Promise<T
     return {
       id: task.id,
       title: task.title,
+      description: task.description,
       completed: task.is_completed, // Map backend field to frontend field
       createdAt: task.created_at,   // Map backend field to frontend field
       updatedAt: task.updated_at,   // Map backend field to frontend field
@@ -161,6 +163,7 @@ export const toggleTodoCompletion = async (id: string): Promise<Todo> => {
     return {
       id: task.id,
       title: task.title,
+      description: task.description,
       completed: task.is_completed, // Map backend field to frontend field
       createdAt: task.created_at,   // Map backend field to frontend field
       updatedAt: task.updated_at,   // Map backend field to frontend field

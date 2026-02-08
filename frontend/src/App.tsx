@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "./components/Theme/ThemeProvider";
+import { TodoProvider } from "./context/TodoContext";
 import "./App.css";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -88,9 +89,11 @@ function App() {
     <Router>
       <AuthProvider>
         <ThemeProvider>
-          <div className="App">
-            <AppContent />
-          </div>
+          <TodoProvider>
+            <div className="App">
+              <AppContent />
+            </div>
+          </TodoProvider>
         </ThemeProvider>
       </AuthProvider>
     </Router>

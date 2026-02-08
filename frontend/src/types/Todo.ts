@@ -13,11 +13,13 @@ export interface Todo {
 // Interface for creating a new todo
 export interface CreateTodoDto {
   title: string;
+  description?: string;
 }
 
 // Interface for updating a todo
 export interface UpdateTodoDto {
   title?: string;
+  description?: string;
   completed?: boolean;
 }
 

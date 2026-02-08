@@ -1,6 +1,5 @@
 import React from "react";
-import { useTodos } from "../hooks/useTodos";
-import { useAuth } from "../hooks/useAuth";
+import { useTodoContext } from "../context/TodoContext";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import TodoForm from "../components/Todo/TodoForm";
 import TodoList from "../components/Todo/TodoList";
@@ -18,9 +17,7 @@ const Dashboard: React.FC = () => {
     deleteTodo,
     updateTodo,
     deleteCompletedTodos,
-  } = useTodos();
-
-  const { user } = useAuth();
+  } = useTodoContext();
 
   return (
     <DashboardLayout title="Todo Dashboard">
