@@ -147,12 +147,12 @@ const Chatbot: React.FC = () => {
         if (promises.length > 0) {
           // Wait for all promises to resolve/reject before refreshing
           // Use Promise.allSettled to ensure refresh happens regardless of operation outcomes
-          Promise.allSettled(promises).finally(() => {
-            // Add a small delay to ensure all state updates have settled before refreshing
-            setTimeout(() => {
-              refreshTodos && refreshTodos();
-            }, 100);
-          });
+          await Promise.allSettled(promises);
+          
+          // Refresh todos to ensure UI is up-to-date
+          if (refreshTodos) {
+            await refreshTodos();
+          }
         }
       }
     } catch (error) {
@@ -177,23 +177,23 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] shadow-lg">
-      <div className="p-4 border-b border-[var(--border-color)] bg-gradient-to-r from-[var(--pak-green-primary)] to-[var(--pak-green-hover)]">
+    <div className="flex flex-col h-full glass-effect rounded-xl border border-[var(--bg-glass-border)] shadow-xl">
+      <div className="p-4 border-b border-[var(--bg-glass-border)] bg-gradient-to-r from-[var(--neon-cyan)]/20 to-[var(--neon-purple)]/20 rounded-t-xl">
         <div className="flex items-center space-x-3">
           <div className="relative">
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <div className="absolute top-0 left-0 w-3 h-3 bg-green-400 rounded-full opacity-75 animate-ping"></div>
+            <div className="w-3 h-3 bg-[var(--neon-cyan)] rounded-full animate-pulse glow-cyan"></div>
+            <div className="absolute top-0 left-0 w-3 h-3 bg-[var(--neon-purple)] rounded-full opacity-75 animate-ping glow-purple"></div>
           </div>
-          <h3 className="text-lg font-bold text-white">AI Assistant</h3>
+          <h3 className="text-lg font-bold gradient-text">AI Assistant</h3>
         </div>
-        <p className="text-sm text-blue-100 mt-1">Powered by advanced natural language processing</p>
+        <p className="text-sm text-[var(--text-tertiary)] mt-1">Powered by advanced natural language processing</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-96 bg-[var(--bg-primary)]">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-96">
         {messages.length === 0 ? (
           <div className="text-center py-8 text-[var(--text-secondary)]">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[var(--pak-green-primary)] to-[var(--pak-green-hover)] flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] flex items-center justify-center glow-pulse">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                 </svg>
@@ -201,23 +201,23 @@ const Chatbot: React.FC = () => {
             </div>
             <p className="font-medium text-[var(--text-primary)]">Hello! I'm your AI assistant.</p>
             <p className="mt-2 text-[var(--text-secondary)]">Ask me to manage your tasks naturally</p>
-            <div className="mt-4 p-4 bg-[var(--bg-secondary)] rounded-lg">
+            <div className="mt-4 p-4 glass-effect rounded-lg border border-[var(--bg-glass-border)]">
               <p className="text-sm font-medium text-[var(--text-primary)] mb-2">Try saying:</p>
               <ul className="text-xs space-y-1">
                 <li className="flex items-start">
-                  <span className="text-[var(--pak-green-primary)] mr-2">•</span>
+                  <span className="text-[var(--neon-cyan)] mr-2">•</span>
                   <span className="text-[var(--text-secondary)]">"Add a task to buy groceries"</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-[var(--pak-green-primary)] mr-2">•</span>
+                  <span className="text-[var(--neon-cyan)] mr-2">•</span>
                   <span className="text-[var(--text-secondary)]">"Mark task 1 as complete"</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-[var(--pak-green-primary)] mr-2">•</span>
+                  <span className="text-[var(--neon-cyan)] mr-2">•</span>
                   <span className="text-[var(--text-secondary)]">"List all my tasks"</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-[var(--pak-green-primary)] mr-2">•</span>
+                  <span className="text-[var(--neon-cyan)] mr-2">•</span>
                   <span className="text-[var(--text-secondary)]">"Delete the meeting task"</span>
                 </li>
               </ul>
@@ -232,12 +232,12 @@ const Chatbot: React.FC = () => {
               <div
                 className={`max-w-xs md:max-w-md px-4 py-3 rounded-2xl ${
                   message.role === "user"
-                    ? "bg-gradient-to-r from-[var(--pak-green-primary)] to-[var(--pak-green-hover)] text-white ml-4"
-                    : "bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-color)] mr-4"
-                } shadow-md`}
+                    ? "bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] text-white ml-4 shadow-lg glow-cyan"
+                    : "glass-effect text-[var(--text-primary)] border border-[var(--bg-glass-border)] mr-4"
+                }`}
               >
                 <div className="whitespace-pre-wrap break-words">{message.content}</div>
-                <div className={`text-xs mt-2 opacity-70 ${message.role === "user" ? "text-blue-100" : "text-gray-500"}`}>
+                <div className={`text-xs mt-2 opacity-70 ${message.role === "user" ? "text-blue-100" : "text-[var(--text-tertiary)]"}`}>
                   {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </div>
               </div>
@@ -246,12 +246,12 @@ const Chatbot: React.FC = () => {
         )}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-color)] px-4 py-3 rounded-2xl mr-4 shadow-md">
+            <div className="glass-effect text-[var(--text-primary)] border border-[var(--bg-glass-border)] px-4 py-3 rounded-2xl mr-4">
               <div className="flex items-center space-x-2">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-[var(--pak-green-primary)] rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-[var(--pak-green-primary)] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                  <div className="w-2 h-2 bg-[var(--pak-green-primary)] rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                  <div className="w-2 h-2 bg-[var(--neon-cyan)] rounded-full animate-bounce glow-cyan"></div>
+                  <div className="w-2 h-2 bg-[var(--neon-purple)] rounded-full animate-bounce glow-purple" style={{ animationDelay: "0.2s" }}></div>
+                  <div className="w-2 h-2 bg-[var(--neon-blue)] rounded-full animate-bounce glow-blue" style={{ animationDelay: "0.4s" }}></div>
                 </div>
                 <span className="text-sm">Thinking...</span>
               </div>
@@ -261,20 +261,20 @@ const Chatbot: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-primary)]">
+      <div className="p-4 border-t border-[var(--bg-glass-border)]">
         <div className="flex space-x-2">
           <textarea
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask me to manage your tasks..."
-            className="flex-1 resize-none border border-[var(--border-color)] rounded-xl px-4 py-3 bg-[var(--bg-secondary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--pak-green-primary)] focus:ring-offset-2 transition-all duration-200"
+            className="flex-1 resize-none border border-[var(--bg-glass-border)] rounded-xl px-4 py-3 glass-effect text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--neon-cyan)] focus:ring-offset-2 transition-all duration-200"
             rows={2}
           />
           <button
             onClick={sendMessage}
             disabled={isLoading || !inputMessage.trim() || !user?.id}
-            className="px-6 py-3 bg-gradient-to-r from-[var(--pak-green-primary)] to-[var(--pak-green-hover)] text-white rounded-xl hover:from-[var(--pak-green-hover)] hover:to-[var(--pak-green-primary)] disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[var(--pak-green-primary)] focus:ring-offset-2 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+            className="px-6 py-3 bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] text-white rounded-xl hover:from-[var(--neon-purple)] hover:to-[var(--neon-cyan)] disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[var(--neon-cyan)] focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-glow transform hover:-translate-y-0.5 glow-cyan"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />

@@ -1,62 +1,83 @@
-/* Pakistan-inspired Dark Theme */
+/* AI-Themed Dark Mode */
 
 :root {
-  /* Pakistan Green Colors */
-  --pak-green-primary: #006600; /* Pakistan Green */
-  --pak-green-secondary: #01411C; /* Darker Pakistan green */
-  --pak-green-light: #00A651; /* Lighter green for accents */
-  --pak-green-hover: #005500; /* Hover state for buttons */
-
+  /* AI Theme Colors */
+  --ai-primary: #0f172a; /* Deep space blue */
+  --ai-secondary: #1e293b; /* Darker blue-gray */
+  --ai-tertiary: #334155; /* Medium blue-gray */
+  
+  /* Neon Accent Colors */
+  --neon-cyan: #00f7ff; /* Bright cyan for highlights */
+  --neon-purple: #bd3dff; /* Purple for accents */
+  --neon-blue: #0ea5e9; /* Blue for secondary accents */
+  --neon-green: #00ff9d; /* Green for success states */
+  
   /* Dark Theme Colors */
-  --bg-primary: #121212; /* Deep charcoal background */
-  --bg-secondary: #1e1e1e; /* Slightly lighter dark for cards */
-  --bg-tertiary: #2d2d2d; /* Even lighter for specific elements */
-
+  --bg-primary: #0a0e1a; /* Deep space background */
+  --bg-secondary: #111827; /* Card backgrounds */
+  --bg-tertiary: #1f2937; /* Subtle backgrounds */
+  --bg-glass: rgba(17, 24, 39, 0.7); /* Glassmorphism effect */
+  --bg-glass-border: rgba(255, 255, 255, 0.1); /* Glassmorphism border */
+  
   /* Text Colors */
-  --text-primary: #ffffff; /* Off-white for main text */
-  --text-secondary: #b0b0b0; /* Gray for secondary text */
-  --text-disabled: #666666; /* More muted for disabled text */
-
-  /* Accent Colors */
-  --accent-gold: #FFBF00; /* Gold for highlights */
-  --accent-cyan: #00FFFF; /* Soft cyan for highlights */
-  --error-red: #CF6679; /* Muted red for errors */
-
+  --text-primary: #f8fafc; /* Near white */
+  --text-secondary: #cbd5e1; /* Light gray-blue */
+  --text-tertiary: #94a3b8; /* Muted gray-blue */
+  --text-disabled: #64748b; /* Disabled text */
+  
+  /* Status Colors */
+  --success: #10b981; /* Success green */
+  --warning: #f59e0b; /* Warning amber */
+  --error: #ef4444; /* Error red */
+  --info: #3b82f6; /* Info blue */
+  
   /* UI Elements */
-  --border-color: #333333; /* Border color for UI elements */
-  --border-radius: 8px;
-  --shadow-low: 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --shadow-high: 0 10px 15px rgba(0, 0, 0, 0.4);
-
+  --border-color: #374151; /* Subtle borders */
+  --border-glow: rgba(0, 247, 255, 0.3); /* Neon glow effect */
+  --border-radius: 12px; /* Rounded corners */
+  --border-radius-sm: 8px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 24px;
+  --shadow-low: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 247, 255, 0.1);
+  --shadow-high: 0 10px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 247, 255, 0.2);
+  --shadow-glow: 0 0 15px rgba(0, 247, 255, 0.5), 0 0 30px rgba(189, 61, 255, 0.3);
+  
   /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
-
+  --spacing-xxl: 48px;
+  
   /* Typography */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+  
+  /* Animation */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
 }
 
 /* Additional CSS variables for dark theme */
 [data-theme='dark'] {
-  --bg-primary: #121212;
-  --bg-secondary: #1e1e1e;
-  --bg-tertiary: #2d2d2d;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1f2937;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
 }
 
 /* Light theme variables (for future expansion) */
 [data-theme='light'] {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f5;
-  --bg-tertiary: #e0e0e0;
-  --text-primary: #000000;
-  --text-secondary: #666666;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
 }
 
 /* Page transition styles */
@@ -80,4 +101,73 @@
   opacity: 0;
   transform: translateY(-20px);
   transition: opacity 300ms, transform 300ms;
+}
+
+/* Glow animations */
+.glow-cyan {
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+}
+
+.glow-purple {
+  box-shadow: 0 0 10px rgba(189, 61, 255, 0.5);
+}
+
+.glow-blue {
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+}
+
+.glow-pulse {
+  animation: pulse-glow 2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(189, 61, 255, 0.5);
+  }
+}
+
+/* Glassmorphism effect */
+.glass-effect {
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--bg-glass-border);
+}
+
+/* Gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-border {
+  position: relative;
+  border: none;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
 }

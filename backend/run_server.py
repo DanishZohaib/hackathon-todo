@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Script to run the Todo API server
 """
@@ -21,5 +21,6 @@ if __name__ == "__main__":
         port=8000,
         reload=True,
         reload_dirs=["src"],
-        log_level="info"
+        log_level="info",
+        loop="asyncio"  # Use asyncio instead of uvloop
     )

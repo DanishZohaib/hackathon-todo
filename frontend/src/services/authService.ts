@@ -1,5 +1,4 @@
-import axios from "axios";
-import { apiRequest, setAuthToken } from "./apiClient";
+import { apiClient, apiRequest, setAuthToken } from "./apiClient";
 
 interface LoginCredentials {
   email: string;
@@ -128,20 +127,14 @@ export const logout = async (): Promise<void> => {
   try {
     // Call the logout endpoint to invalidate the token on the server
     await apiRequest.post("/auth/signout");
-
-    // Remove token from local storage
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    // Remove auth header from axios instance
-    setAuthToken(null);
   } catch (error) {
     // Even if the server-side logout fails, we should still clear the local session
     console.error("Logout error:", error);
-
-    // Remove token from local storage
+  } finally {
+    // Always clear local storage and auth header
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("refreshToken");
 
     // Remove auth header from axios instance
     setAuthToken(null);
@@ -151,23 +144,17 @@ export const logout = async (): Promise<void> => {
 // Refresh token function
 export const refreshToken = async (): Promise<TokenResponse> => {
   try {
-    // Get the refresh token from local storage or elsewhere
-    // For now, we'll need to implement the logic to refresh using stored refresh token
-    // This is typically done by storing the refresh token separately
+    // Get the refresh token from local storage
+    const refreshTokenFromStorage = localStorage.getItem("refreshToken");
 
-    // Placeholder implementation - in a real scenario, you'd use the refresh token
-    // to get a new access token from the backend
-    const refreshToken = localStorage.getItem("refreshToken"); // This would need to be stored separately
-
-    if (!refreshToken) {
+    if (!refreshTokenFromStorage) {
       throw new Error("No refresh token available");
     }
 
-    const response = await axios.post<TokenResponse>(`${process.env.REACT_APP_API_URL}/auth/refresh`, {}, {
+    const response = await apiClient.post<TokenResponse>("/auth/refresh", {}, {
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${refreshToken}`,
-      } as any,
+        "Authorization": `Bearer ${refreshTokenFromStorage}`,
+      }
     });
 
     // Update the stored access token

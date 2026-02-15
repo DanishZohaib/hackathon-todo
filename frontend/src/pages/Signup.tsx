@@ -43,15 +43,15 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] p-4">
-      <Card className="w-full max-w-md p-8 bg-[var(--bg-secondary)]">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--ai-primary)] to-[var(--ai-secondary)] p-4">
+      <Card className="w-full max-w-md p-8 glass-effect">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[var(--pak-green-primary)]">Create Account</h1>
+          <h1 className="text-3xl font-bold gradient-text">Create Account</h1>
           <p className="text-[var(--text-secondary)] mt-2">Join our community today</p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-[var(--error-red)] bg-opacity-100 text-white rounded-md border border-[var(--error-red)]">
+          <div className="mb-4 p-3 bg-[var(--error)] bg-opacity-20 text-white rounded-md border border-[var(--error)] glass-effect">
             {error}
           </div>
         )}
@@ -97,7 +97,7 @@ const Signup: React.FC = () => {
 
           <Button
             type="submit"
-            className="w-full mt-6"
+            className="w-full mt-6 bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] hover:from-[var(--neon-purple)] hover:to-[var(--neon-cyan)] text-white shadow-lg hover:shadow-glow"
             disabled={loading}
           >
             {loading ? "Creating account..." : "Sign Up"}
@@ -106,7 +106,7 @@ const Signup: React.FC = () => {
 
         <div className="mt-6 text-center text-sm text-[var(--text-secondary)]">
           Already have an account?{" "}
-          <Link to="/login" className="text-[var(--pak-green-primary)] hover:underline">
+          <Link to="/login" className="text-[var(--neon-cyan)] hover:underline hover:text-[var(--neon-purple)]">
             Sign in
           </Link>
         </div>

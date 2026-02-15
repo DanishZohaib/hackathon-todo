@@ -12,6 +12,24 @@ const apiClient: AxiosInstance = axios.create({
   },
 });
 
+// Flag to prevent multiple simultaneous refresh attempts
+let isRefreshing = false;
+// Queue of requests waiting for token refresh
+let failedQueue: Array<{resolve: (value: any) => void, reject: (error: any) => void}> = [];
+
+// Process the queue of failed requests after token refresh
+const processQueue = (error: any = null, token: string | null = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
 // Request interceptor to add auth token if available
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -26,17 +44,90 @@ apiClient.interceptors.request.use(
   },
 );
 
-// Response interceptor to handle common errors
+// Response interceptor to handle common errors and auto-refresh tokens
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
   },
-  (error) => {
-    if (error.response?.status === 401) {
-      // Unauthorized - possibly log out the user
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login"; // Redirect to login
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      const refreshToken = localStorage.getItem("refreshToken");
+      
+      if (!refreshToken) {
+        // No refresh token available, user needs to log in again
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("refreshToken");
+        delete apiClient.defaults.headers.common["Authorization"];
+        
+        // Redirect to login
+        window.location.href = "/login";
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        // If a refresh is already in progress, add this request to the queue
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(token => {
+          originalRequest.headers['Authorization'] = `Bearer ${token}`;
+          return apiClient(originalRequest);
+        }).catch(err => {
+          return Promise.reject(err);
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        // Attempt to refresh the token
+        const refreshResponse = await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
+          headers: {
+            "Authorization": `Bearer ${refreshToken}`,
+          }
+        });
+
+        if (refreshResponse.data.access_token) {
+          // Update tokens in storage
+          localStorage.setItem("token", refreshResponse.data.access_token);
+          localStorage.setItem("refreshToken", refreshResponse.data.refresh_token);
+          
+          // Update the axios default header
+          apiClient.defaults.headers.common["Authorization"] = `Bearer ${refreshResponse.data.access_token}`;
+          
+          // Process the queue with the new token
+          processQueue(null, refreshResponse.data.access_token);
+          
+          // Retry the original request
+          originalRequest.headers['Authorization'] = `Bearer ${refreshResponse.data.access_token}`;
+          return apiClient(originalRequest);
+        } else {
+          // Refresh failed, redirect to login
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("refreshToken");
+          delete apiClient.defaults.headers.common["Authorization"];
+          
+          window.location.href = "/login";
+          return Promise.reject(error);
+        }
+      } catch (refreshError) {
+        // Refresh failed, clear everything and redirect to login
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("refreshToken");
+        delete apiClient.defaults.headers.common["Authorization"];
+        
+        // Process the queue with an error
+        processQueue(refreshError, null);
+        
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
     }
 
     return Promise.reject(error);
@@ -44,6 +135,7 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
+export { apiClient }; // Export the instance directly
 
 // Utility functions for common operations
 export const apiRequest = {
