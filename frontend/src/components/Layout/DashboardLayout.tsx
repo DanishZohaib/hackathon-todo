@@ -31,11 +31,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--ai-primary)] to-[var(--ai-secondary)] text-[var(--text-primary)]">
       <Header />
       <main className="container mx-auto py-8 px-4">
         {title && (
-          <h1 className="text-3xl font-bold mb-6 text-[var(--text-primary)]">
+          <h1 className="text-3xl font-bold mb-6 gradient-text">
             {title}
           </h1>
         )}

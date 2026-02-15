@@ -21,7 +21,7 @@ const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
     );
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 // Public Route Component (redirects if already authenticated)
@@ -37,7 +37,7 @@ const PublicRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
     );
   }
 
-  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  return !isAuthenticated ? children : <Navigate to="/dashboard" replace />;
 };
 
 const AppContent: React.FC = () => {
@@ -53,7 +53,7 @@ const AppContent: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route
         path="/login"
         element={
@@ -79,7 +79,7 @@ const AppContent: React.FC = () => {
         }
       />
       {/* Catch-all route */}
-      <Route path="*" element={<Navigate to="/dashboard" />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 };

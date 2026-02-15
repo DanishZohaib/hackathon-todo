@@ -8,23 +8,23 @@ const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <header className="bg-[var(--bg-secondary)] border-b border-[var(--pak-green-primary)]/30 py-4 px-6 sticky top-0 z-10">
+    <header className="glass-effect border-b border-[var(--bg-glass-border)] py-4 px-6 sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <Link to="/" className="text-xl font-bold text-[var(--pak-green-primary)]">
-            Todo<span className="text-[var(--text-primary)]">PK</span>
+          <Link to="/" className="text-xl font-bold gradient-text">
+            Todo<span className="text-[var(--text-primary)]">AI</span>
           </Link>
-          <span className="text-[var(--text-secondary)] text-sm hidden md:inline">پاکستان ایڈیشن</span>
+          <span className="text-[var(--text-secondary)] text-sm hidden md:inline">AI-Powered Edition</span>
         </div>
 
         <nav className="hidden md:flex items-center space-x-6">
           <ThemeToggle />
           {isAuthenticated ? (
             <>
-              <Link to="/dashboard" className="text-[var(--text-primary)] hover:text-[var(--pak-green-primary)] transition-colors">
+              <Link to="/dashboard" className="text-[var(--text-primary)] hover:text-[var(--neon-cyan)] transition-colors">
                 Dashboard
               </Link>
-              <Link to="/todos" className="text-[var(--text-primary)] hover:text-[var(--pak-green-primary)] transition-colors">
+              <Link to="/todos" className="text-[var(--text-primary)] hover:text-[var(--neon-cyan)] transition-colors">
                 My Todos
               </Link>
               <span className="text-[var(--text-secondary)]">Welcome, {user?.name}</span>
@@ -34,10 +34,10 @@ const Header: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="text-[var(--text-primary)] hover:text-[var(--pak-green-primary)] transition-colors">
+              <Link to="/login" className="text-[var(--text-primary)] hover:text-[var(--neon-cyan)] transition-colors">
                 Login
               </Link>
-              <Link to="/signup" className="text-[var(--text-primary)] hover:text-[var(--pak-green-primary)] transition-colors">
+              <Link to="/signup" className="text-[var(--text-primary)] hover:text-[var(--neon-cyan)] transition-colors">
                 Sign Up
               </Link>
             </>

@@ -29,10 +29,10 @@ const Dashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <Card className="p-6 bg-[var(--bg-secondary)]">
+          <Card className="p-6 glass-effect">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-[var(--text-primary)]">Manage Your Tasks</h2>
+                <h2 className="text-2xl font-bold gradient-text">Manage Your Tasks</h2>
                 <p className="text-[var(--text-secondary)]">
                   {todos.length} {todos.length === 1 ? "task" : "tasks"} total
                 </p>
@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
                 <Button
                   variant="outline"
                   onClick={deleteCompletedTodos}
-                  className="self-start"
+                  className="self-start bg-gradient-to-r from-[var(--neon-purple)] to-[var(--neon-cyan)] text-white hover:from-[var(--neon-cyan)] hover:to-[var(--neon-purple)]"
                 >
                   Delete Completed
                 </Button>
@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
 
             {loading ? (
               <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--pak-green-primary)]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--neon-cyan)] glow-cyan"></div>
               </div>
             ) : (
               <TodoList
@@ -70,8 +70,8 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div>
-          <Card className="p-6 bg-[var(--bg-secondary)] h-full">
-            <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">AI Assistant</h2>
+          <Card className="p-6 glass-effect h-full">
+            <h2 className="text-xl font-bold gradient-text mb-4">AI Assistant</h2>
             <Chatbot />
           </Card>
         </div>

@@ -29,7 +29,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ onAdd, loading = false }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter a new task..."
-          className="w-full"
+          className="w-full glass-effect border border-[var(--bg-glass-border)] focus:border-[var(--neon-cyan)] focus:ring-[var(--neon-cyan)]"
           disabled={loading}
         />
         <Input
@@ -37,10 +37,14 @@ const TodoForm: React.FC<TodoFormProps> = ({ onAdd, loading = false }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Add a description (optional)..."
-          className="w-full"
+          className="w-full glass-effect border border-[var(--bg-glass-border)] focus:border-[var(--neon-cyan)] focus:ring-[var(--neon-cyan)]"
           disabled={loading}
         />
-        <Button type="submit" disabled={loading || !title.trim()}>
+        <Button 
+          type="submit" 
+          disabled={loading || !title.trim()}
+          className="bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] hover:from-[var(--neon-purple)] hover:to-[var(--neon-cyan)] text-white shadow-lg hover:shadow-glow transition-all duration-300"
+        >
           {loading ? "Adding..." : "Add Task"}
         </Button>
       </div>

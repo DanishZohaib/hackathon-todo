@@ -1,12 +1,15 @@
 import { Todo, CreateTodoDto, UpdateTodoDto } from "../types/Todo";
-import { apiRequest } from "./apiClient";
+import { secureApiRequest } from "./secureApiService";
 
 // Get all todos for the authenticated user
 export const getTodos = async (): Promise<Todo[]> => {
+  console.log("Attempting to fetch todos from backend...");
   try {
-    const response = await apiRequest.get<{tasks: any[], total_count: number, limit: number, offset: number}>("/todos/");
+    const response = await secureApiRequest.get<{tasks: any[], total_count: number, limit: number, offset: number}>("/todos/");
+    console.log("Received response from backend:", response.data);
+    
     // Transform backend response to match frontend Todo interface
-    return response.data.tasks.map(task => ({
+    const todos = response.data.tasks.map((task: any) => ({
       id: task.id,
       title: task.title,
       description: task.description,
@@ -17,6 +20,9 @@ export const getTodos = async (): Promise<Todo[]> => {
       updatedAt: task.updated_at,   // Map backend field to frontend field
       userId: task.user_id          // Map backend field to frontend field
     }));
+    
+    console.log(`Fetched ${todos.length} todos from backend`);
+    return todos;
   } catch (error: any) {
     console.error("Error fetching todos:", error);
 
@@ -38,8 +44,8 @@ export const getTodos = async (): Promise<Todo[]> => {
 // Get a specific todo by ID
 export const getTodoById = async (id: string): Promise<Todo> => {
   try {
-    const response = await apiRequest.get<any>(`/todos/${id}`);
-    const task = response.data;
+    const response = await secureApiRequest.get<any>(`/todos/${id}`);
+    const task: any = response.data;
     return {
       id: task.id,
       title: task.title,
@@ -72,8 +78,8 @@ export const getTodoById = async (id: string): Promise<Todo> => {
 // Create a new todo
 export const createTodo = async (todoData: CreateTodoDto): Promise<Todo> => {
   try {
-    const response = await apiRequest.post<any>("/todos/", todoData);
-    const task = response.data;
+    const response = await secureApiRequest.post<any>("/todos/", todoData);
+    const task: any = response.data;
     return {
       id: task.id,
       title: task.title,
@@ -104,8 +110,8 @@ export const createTodo = async (todoData: CreateTodoDto): Promise<Todo> => {
 // Update a todo
 export const updateTodo = async (id: string, todoData: UpdateTodoDto): Promise<Todo> => {
   try {
-    const response = await apiRequest.put<any>(`/todos/${id}`, todoData);
-    const task = response.data;
+    const response = await secureApiRequest.put<any>(`/todos/${id}`, todoData);
+    const task: any = response.data;
     return {
       id: task.id,
       title: task.title,
@@ -136,7 +142,7 @@ export const updateTodo = async (id: string, todoData: UpdateTodoDto): Promise<T
 // Delete a todo
 export const deleteTodo = async (id: string): Promise<void> => {
   try {
-    await apiRequest.delete(`/todos/${id}`);
+    await secureApiRequest.delete(`/todos/${id}`);
   } catch (error: any) {
     console.error(`Error deleting todo with ID ${id}:`, error);
 
@@ -158,8 +164,8 @@ export const deleteTodo = async (id: string): Promise<void> => {
 // Toggle todo completion status
 export const toggleTodoCompletion = async (id: string): Promise<Todo> => {
   try {
-    const response = await apiRequest.patch<any>(`/todos/${id}/toggle`);
-    const task = response.data;
+    const response = await secureApiRequest.patch<any>(`/todos/${id}/toggle`);
+    const task: any = response.data;
     return {
       id: task.id,
       title: task.title,
@@ -190,7 +196,7 @@ export const toggleTodoCompletion = async (id: string): Promise<Todo> => {
 // Bulk delete completed todos
 export const deleteCompletedTodos = async (): Promise<void> => {
   try {
-    await apiRequest.delete("/todos/");
+    await secureApiRequest.delete("/todos/");
   } catch (error: any) {
     console.error("Error deleting completed todos:", error);
 

@@ -24,6 +24,7 @@ def get_current_user_id(
     token = credentials.credentials
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        
         token_type = payload.get("token_type", "access")
 
         # Only allow access tokens for getting current user, not refresh tokens
@@ -41,7 +42,21 @@ def get_current_user_id(
                 detail="Could not validate credentials",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-    except JWTError:
+            
+        # Check if token has expired
+        import time
+        exp = payload.get("exp")
+        if exp and exp < time.time():
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token has expired",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        # Log the decoded user_email for debugging
+        print(f"Decoded user_email from token: {user_email}")
+    except JWTError as e:
+        print(f"JWT decode error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
@@ -55,7 +70,10 @@ def get_current_user_id(
             detail="User not found",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return str(user.id)
+
+    user_id_str = str(user.id)
+    print(f"Fetched user_id from DB: {user_id_str}")
+    return user_id_str
 
 
 @task_router.get("/", response_model=TaskListResponse)
@@ -69,6 +87,22 @@ def list_tasks(
 ):
     # Get tasks with pagination and sorting
     from ..models.task import Task
+
+    # Log for debugging
+    print(f"Fetching tasks for user_id: {current_user_id} (type: {type(current_user_id)})")
+
+    # Convert string user_id to UUID for proper comparison
+    try:
+        user_uuid = uuid.UUID(current_user_id) if isinstance(current_user_id, str) else current_user_id
+        print(f"Converted user_id to UUID: {user_uuid}")
+    except ValueError:
+        print(f"Invalid user ID format: {current_user_id}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid user ID format"
+        )
+
+    # Get tasks for the authenticated user
     tasks = TaskService.get_tasks_by_user(
         db=db,
         user_id=current_user_id,
@@ -78,8 +112,7 @@ def list_tasks(
         sort_by=sort
     )
 
-    # Calculate total count properly - convert string ID to UUID for comparison
-    user_uuid = uuid.UUID(current_user_id) if isinstance(current_user_id, str) else current_user_id
+    # Calculate total count for the authenticated user - use same user identifier
     total_query = db.query(Task)
     total_query = total_query.filter(Task.user_id == user_uuid)
 
@@ -90,11 +123,12 @@ def list_tasks(
             total_query = total_query.filter(Task.is_completed == False)
 
     total_count = total_query.count()
+    print(f"Found {len(tasks)} tasks for user {current_user_id}, total count: {total_count}")
 
     # Convert to response format
     task_responses = [
         TaskResponse(
-            id=task.id,
+            id=str(task.id),  # Ensure ID is string
             title=task.title,
             description=task.description,
             is_completed=task.is_completed,
@@ -102,7 +136,7 @@ def list_tasks(
             priority=task.priority,
             created_at=task.created_at,
             updated_at=task.updated_at,
-            user_id=task.user_id
+            user_id=str(task.user_id)  # Ensure user_id is string
         )
         for task in tasks
     ]

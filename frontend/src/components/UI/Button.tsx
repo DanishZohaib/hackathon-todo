@@ -31,10 +31,10 @@ const Button: React.FC<ButtonProps> = ({
 
   // Variant variants
   const variantClasses = {
-    primary: "bg-[var(--pak-green-primary)] text-white hover:bg-[var(--pak-green-light)] focus:ring-[var(--pak-green-primary)] disabled:opacity-50 disabled:cursor-not-allowed",
-    secondary: "bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--pak-green-primary)] hover:bg-[var(--pak-green-primary)] hover:text-white focus:ring-[var(--pak-green-primary)] disabled:opacity-50 disabled:cursor-not-allowed",
-    outline: "border border-[var(--pak-green-primary)] bg-transparent text-[var(--pak-green-primary)] hover:bg-[var(--pak-green-primary)] hover:text-white focus:ring-[var(--pak-green-primary)] disabled:opacity-50 disabled:cursor-not-allowed",
-    ghost: "bg-transparent text-[var(--pak-green-primary)] hover:bg-[var(--pak-green-primary)] hover:text-white focus:ring-[var(--pak-green-primary)] disabled:opacity-50 disabled:cursor-not-allowed",
+    primary: "bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] text-white hover:from-[var(--neon-purple)] hover:to-[var(--neon-cyan)] focus:ring-[var(--neon-cyan)] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-glow",
+    secondary: "bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--neon-cyan)] hover:bg-[var(--neon-cyan)] hover:text-white focus:ring-[var(--neon-cyan)] disabled:opacity-50 disabled:cursor-not-allowed",
+    outline: "border border-[var(--neon-cyan)] bg-transparent text-[var(--neon-cyan)] hover:bg-[var(--neon-cyan)] hover:text-[var(--bg-primary)] focus:ring-[var(--neon-cyan)] disabled:opacity-50 disabled:cursor-not-allowed",
+    ghost: "bg-transparent text-[var(--neon-cyan)] hover:bg-[var(--neon-cyan)] hover:text-[var(--bg-primary)] focus:ring-[var(--neon-cyan)] disabled:opacity-50 disabled:cursor-not-allowed",
   };
 
   const classes = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`;

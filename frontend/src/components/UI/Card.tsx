@@ -20,8 +20,8 @@ const Card: React.FC<CardProps> = ({
   };
 
   const variantClasses = {
-    default: "bg-[var(--bg-secondary)] border border-[var(--pak-green-primary)]/20",
-    outlined: "bg-[var(--bg-secondary)] border border-[var(--pak-green-primary)]",
+    default: "glass-effect border border-[var(--bg-glass-border)]",
+    outlined: "glass-effect border border-[var(--neon-cyan)]",
   };
 
   const classes = `

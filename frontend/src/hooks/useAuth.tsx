@@ -1,6 +1,7 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import { setAuthToken, getAuthToken } from "../services/apiClient";
+import { useState, useEffect, useCallback, createContext, useContext } from "react";
+import { apiClient, setAuthToken, getAuthToken } from "../services/apiClient";
 import { login as loginService, register as registerService, logout as logoutService, getCurrentUser } from "../services/authService";
+import { isValidToken, isTokenAboutToExpire } from "../utils/tokenUtils";
 
 interface User {
   id: string;
@@ -40,11 +41,65 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const logout = () => {
+    // Call the actual logout service
+    logoutService().catch(error => {
+      console.error("Logout service error:", error);
+      // Even if the service call fails, we should still clear local state
+    });
+
+    // Clear all auth-related data from localStorage
+    setAuthToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("refreshToken");
+
+    // Update state
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
+  const refreshToken = useCallback(async (): Promise<boolean> => {
+    try {
+      const refreshTokenFromStorage = localStorage.getItem("refreshToken");
+      if (!refreshTokenFromStorage) {
+        throw new Error("No refresh token available");
+      }
+
+      // Make API call to refresh the access token
+      const response = await apiClient.post("/auth/refresh", {}, {
+        headers: {
+          "Authorization": `Bearer ${refreshTokenFromStorage}`
+        }
+      });
+
+      if (response.data.access_token) {
+        // Update both tokens in storage
+        setAuthToken(response.data.access_token);
+        localStorage.setItem("refreshToken", response.data.refresh_token);
+
+        // Update user data if needed
+        const userProfile = await getCurrentUser();
+        setUser(userProfile);
+        setIsAuthenticated(true);
+
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      logout(); // If refresh fails, log out the user
+      return false;
+    }
+  }, [setAuthToken, setUser, setIsAuthenticated, logout]); // Add dependencies as needed
+
   useEffect(() => {
     // Check if user is logged in on initial load
     const initializeAuth = async () => {
       const token = getAuthToken();
-      if (token) {
+
+      if (token && isValidToken(token)) {
         try {
           // Attempt to get user info with the stored token
           const userProfile = await getCurrentUser();
@@ -55,13 +110,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // If token verification fails, clear it
           localStorage.removeItem("token");
           localStorage.removeItem("user");
+          localStorage.removeItem("refreshToken");
         }
+      } else if (token && !isValidToken(token)) {
+        // Token exists but is expired, clear it
+        console.log("Token is expired, clearing...");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("refreshToken");
+        setAuthToken(null);
       }
+
       setLoading(false);
     };
 
     initializeAuth();
   }, []);
+
+  // Set up interval to check for token expiration and refresh proactively
+  useEffect(() => {
+    const scheduleTokenRefresh = () => {
+      const token = getAuthToken();
+      
+      if (token && isValidToken(token) && isTokenAboutToExpire(token)) {
+        // Token is about to expire, refresh it now
+        refreshToken().catch(error => {
+          console.error("Automatic token refresh failed:", error);
+        });
+      }
+    };
+
+    // Check every minute for token expiration
+    const interval = setInterval(scheduleTokenRefresh, 60000); // Check every minute
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isAuthenticated, refreshToken]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -107,39 +192,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return true;
     } catch (error) {
       console.error("Signup failed:", error);
-      return false;
-    }
-  };
-
-  const logout = () => {
-    // Call the actual logout service
-    logoutService().catch(error => {
-      console.error("Logout service error:", error);
-      // Even if the service call fails, we should still clear local state
-    });
-
-    // Clear token and user from localStorage
-    setAuthToken(null);
-    localStorage.removeItem("user");
-
-    // Update state
-    setUser(null);
-    setIsAuthenticated(false);
-  };
-
-  const refreshToken = async (): Promise<boolean> => {
-    try {
-      // The backend doesn't have a refresh endpoint implemented yet, so we'll just return true
-      // In a real implementation, this would make an API call to refresh the token
-      // const response = await apiRequest.post('/auth/refresh');
-      // const { newToken } = response.data;
-      // setAuthToken(newToken);
-
-      // For now, we'll just return true to indicate success
-      return true;
-    } catch (error) {
-      console.error("Token refresh failed:", error);
-      logout(); // If refresh fails, log out the user
       return false;
     }
   };

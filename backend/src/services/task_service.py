@@ -58,7 +58,9 @@ class TaskService:
         # Convert string user_id to UUID for proper comparison
         try:
             user_uuid = uuid.UUID(user_id) if isinstance(user_id, str) else user_id
+            print(f"TaskService.get_tasks_by_user: Looking for tasks for user_id: {user_uuid} (input: {user_id})")
         except ValueError:
+            print(f"TaskService.get_tasks_by_user: Invalid user ID format: {user_id}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid user ID format"

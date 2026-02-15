@@ -76,8 +76,8 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
           : "scale-100 opacity-100"
       } ${
         todo.completed
-          ? "bg-[var(--pak-green-primary)] bg-opacity-10 border-[var(--pak-green-primary)]"
-          : "bg-[var(--bg-secondary)] border-[var(--pak-green-primary)]/30"
+          ? "glass-effect border border-[var(--neon-green)]/30"
+          : "glass-effect border border-[var(--bg-glass-border)]"
       }`}
       elevation="medium"
     >
@@ -86,7 +86,7 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
           type="checkbox"
           checked={todo.completed}
           onChange={() => setIsToggling(true)}
-          className="mt-1 h-5 w-5 rounded border-gray-300 text-[var(--pak-green-primary)] focus:ring-[var(--pak-green-primary)] cursor-pointer"
+          className="mt-1 h-5 w-5 rounded border-[var(--border-color)] text-[var(--neon-cyan)] focus:ring-[var(--neon-cyan)] cursor-pointer bg-[var(--bg-tertiary)]"
         />
 
         <div className="flex-1">
@@ -98,17 +98,17 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
                 onChange={(e) => setEditValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 autoFocus
-                className="w-full px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--pak-green-primary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--pak-green-primary)]"
+                className="w-full px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--neon-cyan)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--neon-cyan)]"
               />
               <input
                 type="text"
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--pak-green-primary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--pak-green-primary)]"
+                className="w-full px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] border border-[var(--neon-cyan)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--neon-cyan)]"
                 placeholder="Description (optional)"
               />
               <div className="flex gap-2 mt-2">
-                <Button size="sm" onClick={handleSave}>Save</Button>
+                <Button size="sm" onClick={handleSave} className="bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] hover:from-[var(--neon-purple)] hover:to-[var(--neon-cyan)]">Save</Button>
                 <Button variant="outline" size="sm" onClick={handleCancel}>Cancel</Button>
               </div>
             </div>
@@ -118,7 +118,7 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
                 <span
                   className={`text-[var(--text-primary)] ${
                     todo.completed
-                      ? "line-through text-[var(--text-secondary)]"
+                      ? "line-through text-[var(--text-tertiary)]"
                       : "text-[var(--text-primary)]"
                   }`}
                 >
@@ -127,8 +127,8 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
                 <span
                   className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                     todo.completed
-                      ? "bg-[var(--pak-green-primary)] text-white"
-                      : "bg-[var(--pak-green-light)] text-[var(--bg-primary)]"
+                      ? "bg-[var(--neon-green)] text-[var(--bg-primary)]"
+                      : "bg-[var(--neon-blue)]/20 text-[var(--neon-blue)] border border-[var(--neon-blue)]/30"
                   }`}
                 >
                   {todo.completed ? "Completed" : "Pending"}
@@ -139,7 +139,7 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
                   {todo.description}
                 </div>
               )}
-              <div className="text-xs text-[var(--text-secondary)]">
+              <div className="text-xs text-[var(--text-tertiary)]">
                 Created: {new Date(todo.createdAt).toLocaleDateString()}
               </div>
             </div>
@@ -151,10 +151,10 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
             <button
               type="button"
               onClick={() => setIsEditing(true)}
-              className="p-2 rounded-full hover:bg-[var(--pak-green-primary)] hover:text-white transition-colors"
+              className="p-2 rounded-full hover:bg-[var(--neon-cyan)]/20 transition-colors border border-transparent hover:border-[var(--neon-cyan)]/30"
               aria-label="Edit todo"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--pak-green-primary)] hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--neon-cyan)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
             </button>
@@ -162,10 +162,10 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onToggle, onDelete, onEdit })
           <button
             type="button"
             onClick={() => setIsDeleting(true)}
-            className="p-2 rounded-full hover:bg-[var(--error-red)] hover:text-white transition-colors"
+            className="p-2 rounded-full hover:bg-[var(--error)]/20 transition-colors border border-transparent hover:border-[var(--error)]/30"
             aria-label="Delete todo"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--error-red)] hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--error)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
           </button>
